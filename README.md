@@ -9,7 +9,7 @@ This repository is NOT to be copied and I do not codone cheating for CPSC assign
 
 ## License
 
-This project is licensed under the MIT License. See the **LICENSE** file for details.
+This project is licensed under the GNU License. See the **LICENSE** file for details.
 
 ## Credits
 
