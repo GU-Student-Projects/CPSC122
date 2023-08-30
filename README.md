@@ -1,2 +1,16 @@
+
 # CPSC122
-Projects and assignments for Gonzaga Computer Science 122
+
+Projects for Gonzaga CPSC122 taught by Daniel Olivares. 
+
+This repository is NOT to be copied and I do not codone cheating for CPSC assignments. This is to be used as a tool to help understand the assignment.
+
+## Usage
+
+## License
+
+This project is licensed under the MIT License. See the **LICENSE** file for details.
+
+## Credits
+
+This project was developed by **Gabe DiMartino** for public use and help with Gonzaga CPSC122 assignments.
