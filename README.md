@@ -3,7 +3,7 @@
 
 Projects for Gonzaga CPSC122 taught by Daniel Olivares. 
 
-This repository is NOT to be copied and I do not codone cheating for CPSC assignments. This is to be used as a tool to help understand the assignment.
+This repository is NOT to be copied and I do not codone cheating for CPSC assignments.
 
 ## Usage
 
