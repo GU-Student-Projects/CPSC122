@@ -6,7 +6,7 @@ Projects for Gonzaga CPSC122 taught by Daniel Olivares.
 This repository is NOT to be copied and I do not codone cheating for CPSC assignments.
 
 ## Usage
-
+All projects contain a **make file** to run the project.
 
 ## License
 
