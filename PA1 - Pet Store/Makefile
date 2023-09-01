@@ -1,3 +1,3 @@
 all:
-	g++ -g -Wall -std=c++11 'PA1 - Pet_Store.cpp' -o Pet_Store
-	./Pet_Store
+	g++ -g -Wall -std=c++11 'Pet_Store_Functions.cpp' -o Pet_Store_Functions
+	./Pet_Store_Functions

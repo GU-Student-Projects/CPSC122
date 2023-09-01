@@ -12,10 +12,12 @@
 bool fileOpen(std::string, std::ifstream&);
 std::string printFile(std::ifstream&);
 void fileClose(std::ifstream&);
+int countRows(std::ifstream& myFile);
 
 int main(){
     std::ifstream myFile;
     std::string filename = "petstoredata.csv";
+    int row = 4;
 
     bool isOpen;
     std::string text;
@@ -26,6 +28,9 @@ int main(){
         text = printFile(myFile);
         std::cout << text <<std::endl;
         fileClose(myFile);
+        int test = countRows(myFile);
+        int csvDataTable[row][countRows(myFile)] = {0};
+        std::cout << test <<std::endl;
     }
     else 
         std::cout << "The file " + filename + " has encountered an error. Please make sure the file is in the correct directory and you have the appropriate permissions to read/write/execute" << std::endl;
@@ -44,13 +49,23 @@ bool fileOpen(std::string filename, std::ifstream& myFile){
 }
 
 std::string printFile(std::ifstream& myFile){
-    std::string line;
-    std::string text;
+    std::string line, text;
+    std::vector<std::vector<int>> array;
 
     while (std::getline(myFile, line)){
         text += line + "\n";
     }
     return text;
+}
+
+int countRows(std::ifstream& myFile){
+    std::string line;
+    int numRow = 0;
+
+    while (std::getline(myFile, line)){
+        ++numRow;
+    }
+    return numRow;
 }
 
 void fileClose(std::ifstream& myFile){
