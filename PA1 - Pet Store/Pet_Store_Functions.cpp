@@ -8,29 +8,33 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 bool fileOpen(std::string, std::ifstream&);
-std::string printFile(std::ifstream&);
+std::vector<std::string> getHeaders(std::ifstream&);
+std::vector<std::string> getData(std::ifstream&);
 void fileClose(std::ifstream&);
 int countRows(std::ifstream& myFile);
 
 int main(){
     std::ifstream myFile;
     std::string filename = "petstoredata.csv";
-    int row = 4;
 
     bool isOpen;
-    std::string text;
+    std::vector<std::vector<std::string>> data;
 
     isOpen = fileOpen(filename, myFile);
 
     if(isOpen){ 
-        text = printFile(myFile);
-        std::cout << text <<std::endl;
+        std::vector<std::string> headers = getHeaders(myFile);
+        for (const auto& header : headers) {
+            std::cout << header << "\t";
+            }
+        std::cout << std::endl;
+
+
+
         fileClose(myFile);
-        int test = countRows(myFile);
-        int csvDataTable[row][countRows(myFile)] = {0};
-        std::cout << test <<std::endl;
     }
     else 
         std::cout << "The file " + filename + " has encountered an error. Please make sure the file is in the correct directory and you have the appropriate permissions to read/write/execute" << std::endl;
@@ -48,25 +52,24 @@ bool fileOpen(std::string filename, std::ifstream& myFile){
 
 }
 
-std::string printFile(std::ifstream& myFile){
-    std::string line, text;
-    std::vector<std::vector<int>> array;
+ std::vector<std::string> getHeaders(std::ifstream& myFile){
+    std::vector<std::string> headers;
+    std::string headerLine;
 
-    while (std::getline(myFile, line)){
-        text += line + "\n";
+    if (std::getline(myFile, headerLine)) {
+        std::istringstream lineToParse(headerLine);
+        std::string cell;
+
+        while (std::getline(lineToParse, cell, ',')) {
+            headers.push_back(cell);
+        }
+    } else {
+        std::cerr << "Failed to read header line from the file." << std::endl;
     }
-    return text;
+    
+    return headers;
 }
 
-int countRows(std::ifstream& myFile){
-    std::string line;
-    int numRow = 0;
-
-    while (std::getline(myFile, line)){
-        ++numRow;
-    }
-    return numRow;
-}
 
 void fileClose(std::ifstream& myFile){
     myFile.close();
