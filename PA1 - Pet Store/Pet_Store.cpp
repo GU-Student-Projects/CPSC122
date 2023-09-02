@@ -13,10 +13,8 @@ int main() {
     std::vector<int> daysAtStore;
 
     if (petStore.processData(filename, myFile, headers, petStoreName, petName, petType, daysAtStore)) {
-        // Data processing was successful
         return 0;
     } else {
-        // Data processing encountered an error
         return 1;
     }
 }

@@ -7,10 +7,9 @@
 
 class PetStore {
 public:
-    // Constructor
+
     PetStore() = default;
 
-    // Member functions
     bool processData(const std::string& filename,
                      std::ifstream& myFile,
                      std::vector<std::string>& headers,
