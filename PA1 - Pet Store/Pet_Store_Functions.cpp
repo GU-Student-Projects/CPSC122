@@ -27,9 +27,14 @@ int main(){
 
     if(isOpen){ 
         std::vector<std::string> headers = getHeaders(myFile);
-        for (const auto& header : headers) {
-            std::cout << header << "\t";
+
+        std::cout << "Processed " << headers.size() << " header columns: ";
+        for (size_t i = 0; i < headers.size(); ++i) {
+            std::cout << headers[i];
+            if (i < headers.size() - 1) {
+                std::cout << ", ";
             }
+        }
         std::cout << std::endl;
 
 
@@ -40,7 +45,6 @@ int main(){
         std::cout << "The file " + filename + " has encountered an error. Please make sure the file is in the correct directory and you have the appropriate permissions to read/write/execute" << std::endl;
     return 0;
 }
-
 
 
 bool fileOpen(std::string filename, std::ifstream& myFile){
@@ -64,7 +68,7 @@ bool fileOpen(std::string filename, std::ifstream& myFile){
             headers.push_back(cell);
         }
     } else {
-        std::cerr << "Failed to read header line from the file." << std::endl;
+        std::cerr << "Error, couldnt read" << std::endl;
     }
     
     return headers;
