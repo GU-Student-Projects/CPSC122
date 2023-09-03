@@ -1,3 +1,10 @@
+/**
+ * File:            Pet_Store_Implementations.cpp
+ * Author:          Gabe DiMartino
+ * Date Modified:   2 September 2023
+ * Description:     Stores all of the functions for the Pet_Store.cpp
+ */
+
 #include "Pet_Store.h"
 #include <iostream>
 #include <fstream>

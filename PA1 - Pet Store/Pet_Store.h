@@ -1,3 +1,9 @@
+/**
+ * File:            Pet_Store.h
+ * Author:          Gabe DiMartino
+ * Date Modified:   2 September 2023
+ * Description:     Header file containing all function declerations and the PetStore class
+ */
 #ifndef PET_STORE_H
 #define PET_STORE_H
 
