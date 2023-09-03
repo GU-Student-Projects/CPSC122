@@ -8,9 +8,9 @@
 class PetStore {
 public:
 
-    PetStore() = default;
+    PetStore() = default;//default constructor
 
-    bool processData(const std::string& filename,
+    bool processData(const std::string& filename,//Public function accessed by main
                      std::fstream& myFile,
                      std::vector<std::string>& headers,
                      std::vector<std::string>& petStoreName,
@@ -26,7 +26,7 @@ public:
                     std::vector<int>& daysAtStore);
 
 private:
-    bool fileOpen(const std::string& filename, std::fstream& myFile);
+    bool fileOpen(const std::string& filename, std::fstream& myFile); //private functions used by the 2 public functions
     void clearScreen();
     void fileClose(std::fstream& myFile);
     void getData(std::fstream& myFile, std::vector<std::string>& headers,
