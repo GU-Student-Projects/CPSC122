@@ -3,9 +3,13 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <set>
+#include <cstdlib>
+#include <ctime>
+
 
 bool PetStore::processData(const std::string& filename,
-                           std::ifstream& myFile,
+                           std::fstream& myFile,
                            std::vector<std::string>& headers,
                            std::vector<std::string>& petStoreName,
                            std::vector<std::string>& petName,
@@ -15,7 +19,7 @@ bool PetStore::processData(const std::string& filename,
         getData(myFile, headers, petStoreName, petName, petType, daysAtStore);
 
         std::cout << "Processed " << headers.size() << " header columns: ";
-        for (size_t i = 0; i < headers.size(); ++i) {
+        for (size_t i = 0; i < headers.size(); i++) {
             std::cout << headers[i];
             if (i < headers.size() - 1) {
                 std::cout << ", ";
@@ -23,12 +27,12 @@ bool PetStore::processData(const std::string& filename,
         }
         std::cout << std::endl << std::endl;
 
-        for (size_t i = 0; i < petStoreName.size(); ++i) {
+        for (size_t i = 0; i < petStoreName.size(); i++) {
             std::cout << "Processed a " << petType[i] << ", \"" << petName[i] << "\" ... "
             << daysAtStore[i] << " day(s) on site at store \"" << petStoreName[i] << "\"" << std::endl;
         }
 
-        std::cout << "All pet store data processed!" << std::endl;
+        std::cout << "All pet store data processed!" <<std::endl << std::endl;
 
         fileClose(myFile);
         return true;
@@ -38,12 +42,67 @@ bool PetStore::processData(const std::string& filename,
     }
 }
 
-bool PetStore::fileOpen(const std::string& filename, std::ifstream& myFile) {
+bool PetStore::writeSummary(const std::string& filename,
+                            std::fstream& myFile,
+                            std::vector<std::string>& petStoreName,
+                            std::vector<std::string>& petName,
+                            std::vector<std::string>& petType,
+                            std::vector<int>& daysAtStore) {
+
+    std::vector<std::string> uniquePetStoreName;
+    std::vector<int> numberOfPetsAtStore;
+
+    std::cout<< "Generating summary report..." <<std::endl<<std::endl;
+    getUniqueStoreNames(petStoreName, uniquePetStoreName);
+    getNumberofPetsByStore(petStoreName, uniquePetStoreName, numberOfPetsAtStore);
+
+    if (fileOpen(filename, myFile)) {
+        myFile << "Pet Store CSV Summary Report" << std::endl;
+        myFile << "----------------------------" << std::endl << std::endl;
+        myFile << "Pet Stores: ";
+        
+        for (size_t i = 0; i < uniquePetStoreName.size(); i++) {
+            myFile << uniquePetStoreName[i];
+            if (i < uniquePetStoreName.size() - 1) {
+                myFile << ", ";
+            }
+        }
+        myFile << std::endl;
+        
+        int mostPetsInStoreIndex = getStoreWithMostPets(petStoreName, uniquePetStoreName, numberOfPetsAtStore);
+
+        myFile << "Total number of pets: " << getNumberOfPets(petType) << std::endl << std::endl;
+        myFile << "Pet store with the most pets: " << uniquePetStoreName[mostPetsInStoreIndex] << std::endl;
+        myFile << "Number of pets at " << uniquePetStoreName[mostPetsInStoreIndex] << ": " << numberOfPetsAtStore[mostPetsInStoreIndex] << std::endl << std::endl;
+        myFile << "Pet average days on site across all stores: " << getAverageNumberOfDays(daysAtStore) << std::endl;
+        myFile << "Employee of the month choice: \"" << randomPetName(petName) << "\"" << std::endl;
+
+        fileClose(myFile);
+
+        std::cout<< "Done !" <<std::endl;
+        return true;
+    } else {
+        std::cerr << "A fatal error has been encountered opening \"" + filename + "\". Please make sure you have the appropriate permissions to read/write." << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+
+
+bool PetStore::fileOpen(const std::string& filename, std::fstream& myFile) {
     myFile.open(filename);
+
+    if(!myFile){
+        myFile.open(filename,std::fstream::out);
+    }
+
     return myFile.is_open();
 }
 
-void PetStore::getData(std::ifstream& myFile, std::vector<std::string>& headers,
+
+void PetStore::getData(std::fstream& myFile, std::vector<std::string>& headers,
              std::vector<std::string>& petStoreName,
              std::vector<std::string>& petName,
              std::vector<std::string>& petType,
@@ -85,6 +144,72 @@ void PetStore::getData(std::ifstream& myFile, std::vector<std::string>& headers,
     }
 }
 
-void PetStore::fileClose(std::ifstream& myFile) {
+void PetStore::fileClose(std::fstream& myFile) {
     myFile.close();
+}
+
+
+
+int PetStore::getNumberOfPets(std::vector<std::string>& petType) {
+    return petType.size();
+}
+
+int PetStore::getAverageNumberOfDays(std::vector<int>& daysAtStore) {
+    if (daysAtStore.empty()) {
+        return 0;
+    }
+    int averageNumberOfDays = 0;
+    for (size_t i = 0; i < daysAtStore.size(); i++) {
+        averageNumberOfDays += daysAtStore[i];
+    }
+    averageNumberOfDays /= static_cast<int>(daysAtStore.size());
+    return averageNumberOfDays;
+}
+
+void PetStore::getUniqueStoreNames(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName) {
+    std::set<std::string> uniqueNames;
+    for (size_t i = 0; i < petStoreName.size(); i++) {
+        uniqueNames.insert(petStoreName[i]);
+    }
+
+    uniquePetStoreName.assign(uniqueNames.begin(), uniqueNames.end());
+}
+
+void PetStore::getNumberofPetsByStore(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
+    for (size_t i = 0; i < uniquePetStoreName.size(); i++) {
+        int tempValue = 0;
+        for (size_t j = 0; j < petStoreName.size(); j++) {
+            if (uniquePetStoreName[i] == petStoreName[j]) {
+                tempValue++;
+            }
+        }
+        numberOfPetsAtStore.push_back(tempValue);;
+    }
+
+}
+
+int PetStore::getStoreWithMostPets(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
+    int arrayElementOfMaximum = 0;
+
+    for (size_t i = 0; i < numberOfPetsAtStore.size(); i++) {
+        if (numberOfPetsAtStore[i] > numberOfPetsAtStore[arrayElementOfMaximum]) {
+            arrayElementOfMaximum = i;
+        }
+    }
+
+    return arrayElementOfMaximum;
+}
+
+
+
+
+int PetStore::getTotalPetsAtStore(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
+    int arrayElementOfMaximum = getStoreWithMostPets(petStoreName, uniquePetStoreName, numberOfPetsAtStore);
+    int totalPets = numberOfPetsAtStore[arrayElementOfMaximum];
+    return totalPets;
+}
+
+std::string PetStore::randomPetName(std::vector<std::string>& petName) {
+    int randomPet = rand() % petName.size();
+    return petName[randomPet];
 }
