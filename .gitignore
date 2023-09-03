@@ -12,3 +12,7 @@
 vendor/ 
 # VSCode
 .vscode
+
+*
+!/**/
+!*.*

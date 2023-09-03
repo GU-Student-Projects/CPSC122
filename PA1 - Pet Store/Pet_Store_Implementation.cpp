@@ -6,7 +6,19 @@
 #include <set>
 #include <cstdlib>
 #include <ctime>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
 
+void PetStore::clearScreen(){ //function to clear terminal
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
 
 bool PetStore::processData(const std::string& filename,
                            std::fstream& myFile,
@@ -17,6 +29,8 @@ bool PetStore::processData(const std::string& filename,
                            std::vector<int>& daysAtStore) {
     if (fileOpen(filename, myFile)) {
         getData(myFile, headers, petStoreName, petName, petType, daysAtStore);
+
+        clearScreen();
 
         std::cout << "Processed " << headers.size() << " header columns: ";
         for (size_t i = 0; i < headers.size(); i++) {

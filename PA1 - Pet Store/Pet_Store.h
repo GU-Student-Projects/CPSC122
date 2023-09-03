@@ -27,6 +27,7 @@ public:
 
 private:
     bool fileOpen(const std::string& filename, std::fstream& myFile);
+    void clearScreen();
     void fileClose(std::fstream& myFile);
     void getData(std::fstream& myFile, std::vector<std::string>& headers,
                  std::vector<std::string>& petStoreName,
