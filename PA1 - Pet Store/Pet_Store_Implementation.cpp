@@ -100,7 +100,7 @@ bool PetStore::writeSummary(const std::string& filename, //Reference vectors fro
 
         fileClose(myFile); //Close the file
 
-        std::cout<< "Done !" <<std::endl;
+        std::cout<< "Done!" <<std::endl;
         return true;
     } else {
         std::cerr << "A fatal error has been encountered opening \"" + filename + "\". Please make sure you have the appropriate permissions to read/write." << std::endl;
