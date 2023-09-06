@@ -6,18 +6,8 @@
  */
 
 #include "Pet_Store.h"
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <sstream>
-#include <set>
-#include <cstdlib>
-#include <ctime>
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <cstdlib>
-#endif
+
+
 
 void PetStore::clearScreen(){ //function to clear terminal
 #ifdef _WIN32 //If OS is WIN32 run cls else use clear

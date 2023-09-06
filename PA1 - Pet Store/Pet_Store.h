@@ -7,9 +7,18 @@
 #ifndef PET_STORE_H
 #define PET_STORE_H
 
-#include <string>
-#include <vector>
+#include <iostream>
 #include <fstream>
+#include <vector>
+#include <sstream>
+#include <set>
+#include <cstdlib>
+#include <ctime>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
 
 class PetStore {
 public:
