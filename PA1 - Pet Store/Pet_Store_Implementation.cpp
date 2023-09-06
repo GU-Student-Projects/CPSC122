@@ -1,9 +1,10 @@
-/**
- * File:            Pet_Store_Implementations.cpp
- * Author:          Gabe DiMartino
- * Date Modified:   2 September 2023
- * Description:     Stores all of the functions for the Pet_Store.cpp
- */
+/*
+Name: Gabe DiMartino
+Class: CPSC122, Fall 2023
+Date: September 2, 2023
+Programming Assignment: PA1
+Description: This cpp contains all of the implementations of functions
+*/
 
 #include "Pet_Store.h"
 
