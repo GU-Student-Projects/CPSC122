@@ -53,6 +53,7 @@
 
 # Files with no extension
 *
+./outputExecutable
 !/**
 !*.*
 !Makefile
