@@ -8,7 +8,7 @@
  I do not have any questions.
 */
 
-#include "count.h"
+#include "main.h"
 
 
 int main()

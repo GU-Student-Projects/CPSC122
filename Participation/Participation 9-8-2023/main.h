@@ -1,5 +1,5 @@
-#ifndef COUNT_H
-#define COUNT_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <iostream> //needed for input/output streams from the console
 #include <fstream>	//needed for file streams

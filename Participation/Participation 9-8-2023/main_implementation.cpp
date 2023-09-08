@@ -1,4 +1,4 @@
-#include "count.h"
+#include "main.h"
 
 bool openInputFile(ifstream &infile, string filename)
 {
