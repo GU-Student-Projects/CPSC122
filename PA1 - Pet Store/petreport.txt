@@ -8,5 +8,5 @@ Pet store with the most pets: Fur Get Me Not
 Number of pets at Fur Get Me Not: 3
 
 Pet average days on site across all stores: 31
-Employee of the month choice: "Lame Duck"
-con"
+Employee of the month choice: "Mary Puppins"
+"

@@ -8,7 +8,17 @@ Description: This cpp contains all of the implementations of functions
 
 #include "Pet_Store.h"
 
-
+     /*************************************************************
+    * Function: clearScreen ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Uses an if statement to determine what OS is uesed
+    * then runs the system command to clear the terminal
+    * Input parameters: System OS
+    * Returns: Clear Screen
+    * Pre: Correct library
+    * Post: Clear Screen
+    *************************************************************/
 
 void PetStore::clearScreen(){ //function to clear terminal
 #ifdef _WIN32 //If OS is WIN32 run cls else use clear
@@ -17,6 +27,18 @@ void PetStore::clearScreen(){ //function to clear terminal
     system("clear");
 #endif
 }
+
+    /*************************************************************
+    * Function: processData ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: This function process the vectors and outputs
+    * the result to the terminal
+    * Input parameters: header row and column vectors
+    * Returns: T/F if sucessful and outputs to terminal
+    * Pre: Data from CSV must be input into vectors
+    * Post: Processed vectors in the terminal.
+    *************************************************************/
 
 bool PetStore::processData(const std::string& filename, //Reference vectors from the main
                            std::fstream& myFile,
@@ -53,6 +75,18 @@ bool PetStore::processData(const std::string& filename, //Reference vectors from
         return false; //If there was a problem show the error
     }
 }
+
+    /*************************************************************
+    * Function: writeSummary ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: This function process the vectors and outputs
+    * the result to the a TXT file
+    * Input parameters: column vectors
+    * Returns: T/F if sucessful and outputs to terminal
+    * Pre: Data from CSV must be input into vectors
+    * Post: Processed vectors in a TXT.
+    *************************************************************/
 
 bool PetStore::writeSummary(const std::string& filename, //Reference vectors from the main
                             std::fstream& myFile,
@@ -101,7 +135,17 @@ bool PetStore::writeSummary(const std::string& filename, //Reference vectors fro
     return true;
 }
 
-
+    /*************************************************************
+    * Function: fileOpen ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Opens any file passed to it. If the file doesnt exist
+    * the program creates it
+    * Input parameters: file name and the fStream variable
+    * Returns: T/F if sucessful throws error if F
+    * Pre: Read/Write access in directory
+    * Post: Working file
+    *************************************************************/
 
 bool PetStore::fileOpen(const std::string& filename, std::fstream& myFile) {
     myFile.open(filename); //Open a file
@@ -113,6 +157,16 @@ bool PetStore::fileOpen(const std::string& filename, std::fstream& myFile) {
     return myFile.is_open();
 }
 
+   /*************************************************************
+    * Function: getData ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Converts the CSV data into several vectors
+    * Input parameters: file name and column/row vectors
+    * Returns: vectors containing all data
+    * Pre: Existing CSV file is opened
+    * Post: Vectors containing CSV data
+    *************************************************************/
 
 void PetStore::getData(std::fstream& myFile, std::vector<std::string>& headers,
              std::vector<std::string>& petStoreName,
@@ -158,15 +212,46 @@ void PetStore::getData(std::fstream& myFile, std::vector<std::string>& headers,
     }
 }
 
+    /*************************************************************
+    * Function: fileClose ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Closes any file passed to it. 
+    * Input parameters: fStream variable
+    * Returns: Closed file
+    * Pre: Read/Write access in directory
+    * Post: Closed file
+    *************************************************************/
+
 void PetStore::fileClose(std::fstream& myFile) {
     myFile.close();
 }
 
-
+    /*************************************************************
+    * Function: getNumberOfPets ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Finds the size of the vector passed
+    * Input parameters: petType vector
+    * Returns: Number of pets
+    * Pre: Populated vector with data from CSV
+    * Post: int Number of pets
+    *************************************************************/
 
 int PetStore::getNumberOfPets(std::vector<std::string>& petType) {
     return petType.size();
 }
+
+    /*************************************************************
+    * Function: getAverageNumberOfDays ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: Finds the average amount of days a pet is at a store
+    * Input parameters: numberOfDays vector
+    * Returns: Average days at store
+    * Pre: Populated vector with data from CSV
+    * Post: int days at store
+    *************************************************************/
 
 int PetStore::getAverageNumberOfDays(std::vector<int>& daysAtStore) {
     if (daysAtStore.empty()) {//If there is no information skipped
@@ -180,6 +265,17 @@ int PetStore::getAverageNumberOfDays(std::vector<int>& daysAtStore) {
     return averageNumberOfDays; //Find the average
 }
 
+    /*************************************************************
+    * Function: getUniqueStoreNames ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: uses Set to sort a unique vector with non duplicated names of stores
+    * Input parameters: petStoreName vector
+    * Returns: vector of 3 names in alphabetic order
+    * Pre: Populated vector with data from CSV
+    * Post: populated uniqueName vector
+    *************************************************************/
+
 void PetStore::getUniqueStoreNames(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName) {
     std::set<std::string> uniqueNames;
     for (size_t i = 0; i < petStoreName.size(); i++) {
@@ -188,6 +284,18 @@ void PetStore::getUniqueStoreNames(std::vector<std::string>& petStoreName, std::
 
     uniquePetStoreName.assign(uniqueNames.begin(), uniqueNames.end());
 }
+
+    /*************************************************************
+    * Function: getNumberofPetsByStore ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: compares the vectors of uniquePetStoreName and petStoreName and counts
+    * how many times a petstore name occurs
+    * Input parameters: petStoreName uniquePetStoreName & numberOfPetsAtStore vector
+    * Returns: populated numberOfPetsAtStore
+    * Pre: Populated vector with data from CSV
+    * Post: numerOfPetsAtStore vector
+    *************************************************************/  
 
 void PetStore::getNumberofPetsByStore(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
     for (size_t i = 0; i < uniquePetStoreName.size(); i++) {
@@ -202,6 +310,18 @@ void PetStore::getNumberofPetsByStore(std::vector<std::string>& petStoreName, st
 
 }
 
+    /*************************************************************
+    * Function: getStoreWithMostPets ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: using the number of pets at store vector, find the
+    * index of the store with the maximum number of pets
+    * Input parameters: petStoreName uniquePetStoreName & numberOfPetsAtStore vector
+    * Returns: int index of the maximum
+    * Pre: Populated vector with data from CSV
+    * Post: int index of maximum
+    *************************************************************/
+
 int PetStore::getStoreWithMostPets(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
     int arrayElementOfMaximum = 0;
 
@@ -214,7 +334,17 @@ int PetStore::getStoreWithMostPets(std::vector<std::string>& petStoreName, std::
     return arrayElementOfMaximum;
 }
 
-
+     /*************************************************************
+    * Function: getTotalPetsAtStore ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: uses the output of getStoreWithMostPets to relate an index to the actual element
+    * and output the number of pets
+    * Input parameters: petStoreName, UniquePetStoreName, numberofPets
+    * Returns: number of pets at a specific store
+    * Pre: Populated vector with data from CSV
+    * Post: int number of pets
+    *************************************************************/   
 
 
 int PetStore::getTotalPetsAtStore(std::vector<std::string>& petStoreName, std::vector<std::string>& uniquePetStoreName, std::vector<int>& numberOfPetsAtStore) {
@@ -222,6 +352,17 @@ int PetStore::getTotalPetsAtStore(std::vector<std::string>& petStoreName, std::v
     int totalPets = numberOfPetsAtStore[arrayElementOfMaximum]; //Get the number of pets at a store
     return totalPets;
 }
+
+     /*************************************************************
+    * Function: randomPetName ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/2/23
+    * Description: takes the size of pet names and finds a random
+    * Input parameters: petName
+    * Returns: string random pet name
+    * Pre: Populated vector with data from CSV
+    * Post: string random name
+    *************************************************************/ 
 
 std::string PetStore::randomPetName(std::vector<std::string>& petName) {
     int randomPet = rand() % petName.size(); //generate random employee of the month
