@@ -13,7 +13,7 @@
 int main()
 {
 	// declare all local variables at the top of your functions (main in this case)
-	ifstream infile;
+	std::ifstream infile;
 	bool inputfileIsOpen = false;
 
 	// after declaring all variables, THEN perform calculations, function calls, etc.
@@ -21,7 +21,7 @@ int main()
 
 	if (!inputfileIsOpen)
 	{
-		cout << "Input file failed to open successfully..." << endl;
+		std::cout << "Input file failed to open successfully..." << std::endl;
 		exit(1);
 	}
 
