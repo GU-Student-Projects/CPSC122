@@ -21,8 +21,10 @@ void parseLine(ifstream& infile){
     string line;
     while(getline(infile, line)){
         cout<<"Line: "<<line<<endl;
+        cout<<endl;
         parseWord(line);
     }
+    cout<<endl;
 
 }
 
@@ -34,6 +36,7 @@ void parseWord(string line){
         parseCharacter(word);
 
     }
+    cout<<endl;
 
 }
 
@@ -41,4 +44,5 @@ void parseCharacter(string word){
     for(size_t i=0; i < word.size(); i++){
         cout<<"Character: "<<word[i]<<endl;
     }
+    cout<<endl;
 }
