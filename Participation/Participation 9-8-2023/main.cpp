@@ -1,6 +1,5 @@
-//[INCLUDE NAME BLOCK ON EACH OF YOUR 3 FILES]
 /*
- Name:
+ Name: Gabe DiMartino
  Class: CPSC 122, Fall 2023
  Lecture 04 Demonstration
  Notes:		

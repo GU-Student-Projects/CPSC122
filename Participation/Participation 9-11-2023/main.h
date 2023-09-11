@@ -1,10 +1,3 @@
-/*
- Name: Gabe DiMartino
- Class: CPSC 122, Fall 2023
- Lecture 04 Demonstration
- Notes:		
-*/
-
 #ifndef MAIN_H
 #define MAIN_H
 
@@ -19,5 +12,8 @@
 using namespace std;
 
 bool openInputFile(ifstream &infile, string filename);
+void parseLine(ifstream& infile);
+void parseWord(string line);
+void parseCharacter(string word);
 
 #endif
