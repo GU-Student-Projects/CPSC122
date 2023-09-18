@@ -11,7 +11,7 @@ Description: This cpp contains all of the implementations of functions
 int main(){
     int numDaysAtStore = 0; //This variable keeps track of the size of your numDays dynamic array
     int* numDaysAtStoreSize = &numDaysAtStore;
-    int* numDaysAtStorePtr = new int[numDaysAtStore]; //This variable is a pointer to your dynamic integer array.
+    int* numDaysAtStorePtr = new int[*numDaysAtStoreSize];//This variable is a pointer to your dynamic integer array.
     
 
     int uniquePetStoreNameCountsSize = 0; //This variable keeps track of the size of your unique counts dynamic array
@@ -22,12 +22,13 @@ int main(){
     std::ifstream inFile;
     std::ofstream outFile;
 
-    if (processData(filename, inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize)) {
+   if (processData(filename, inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize)) {
     } else {
 
         std::cerr << "A fatal error has occured"<<std::endl; //if an error through the error and end the program
         return 1;
     }
+    std::cout<<numDaysAtStorePtr[6]<<std::endl;
 
     return 0;
 }

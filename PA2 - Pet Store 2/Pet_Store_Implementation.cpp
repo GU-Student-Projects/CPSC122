@@ -111,8 +111,9 @@ void getDataFromCSV(std::ifstream& inFile,
                 numStream >> numCell;
                 numDaysAtStorePtr = pushBackInteger(numDaysAtStorePtr, numDaysAtStoreSize, numCell );
             }                        
-        }
+        }      
     }
+    std::cout<<numDaysAtStorePtr[6]<<std::endl;
 }
 
 void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers){
@@ -130,14 +131,14 @@ void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers){
 int* pushBackInteger(int* originalArray, int* arraySize, int newValue ){
     (*arraySize)++;
     int* newArray = new int[*arraySize];
-
     for (int i = 0; i < (*arraySize - 1); i++){
         newArray[i] = originalArray[i];
     }
+    newArray[*arraySize-1] = newValue;
 
-    newArray[*arraySize - 1] = newValue;
-
-    delete [] originalArray;
+    if (originalArray != nullptr) {
+        delete[] originalArray;
+    }
 
     return newArray;
 
@@ -167,7 +168,8 @@ bool processData(const std::string& filename, //Reference vectors from the main
     if (fileOpen(filename, inFile)) { //If the file can open run the following
         getDataFromCSV(inFile, headers, petStoreName, petName, petType, numDaysAtStorePtr, numDaysAtStoreSize); //Get the data from CSV to the indivudal vectors
 
-        clearScreen(); //Clear screen
+        //clearScreen(); //Clear screen
+        std::cout<<numDaysAtStorePtr[6]<<std::endl;
         
         std::cout << "Processed " << headers.size() << " header columns: "; //Format the headers with commas
         for (size_t i = 0; i < headers.size(); i++) {
