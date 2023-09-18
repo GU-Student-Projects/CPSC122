@@ -11,7 +11,8 @@ Description: This cpp contains all of the implementations of functions
 int main(){
     int numDaysAtStore = 0; //This variable keeps track of the size of your numDays dynamic array
     int* numDaysAtStoreSize = &numDaysAtStore;
-    int* numDaysAtStorePtr = nullptr; //This variable is a pointer to your dynamic integer array.
+    int* numDaysAtStorePtr = new int[numDaysAtStore]; //This variable is a pointer to your dynamic integer array.
+    
 
     int uniquePetStoreNameCountsSize = 0; //This variable keeps track of the size of your unique counts dynamic array
     int* uniquePetStoreNameCountsPtr =nullptr; //This variable is a pointer to your dynamic integer array
