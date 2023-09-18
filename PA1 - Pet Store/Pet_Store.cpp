@@ -35,7 +35,8 @@ SW development method
 
 int main() {
 
-    std::fstream myFile; 
+    std::fstream myFile;
+    std::ofstream outFile; 
     std::string filename = "petstoredata.csv"; //Name of file
     std::vector<std::string> headers, petStoreName, petName, petType; //initialize vectors
     std::vector<int> daysAtStore;
@@ -52,7 +53,7 @@ int main() {
 
     filename = "petreport.txt";//Change the filename
 
-    if (petStore.writeSummary(filename, myFile, petStoreName, petName, petType, daysAtStore)) {
+    if (petStore.writeSummary(filename, outFile, petStoreName, petName, petType, daysAtStore)) {
     } else {
 
         std::cerr << "A fatal error has occured"<<std::endl; //if an error through the error and end the program

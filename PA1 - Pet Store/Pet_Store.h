@@ -39,7 +39,7 @@ public: //Public functions accessed by main
 
 
     bool writeSummary(const std::string& filename,
-                    std::fstream& myFile,
+                    std::ofstream& outFile,
                     std::vector<std::string>& petStoreName,
                     std::vector<std::string>& petName,
                     std::vector<std::string>& petType,
@@ -47,6 +47,7 @@ public: //Public functions accessed by main
 
 private: //private functions used by the 2 public functions
     bool fileOpen(const std::string& filename, std::fstream& myFile);
+    bool fileWrite(const std::string& filename, std::ofstream& outFile);
     void clearScreen();
     void fileClose(std::fstream& myFile);
     void getData(std::fstream& myFile, std::vector<std::string>& headers,

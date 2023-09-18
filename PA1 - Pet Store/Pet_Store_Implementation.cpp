@@ -89,7 +89,7 @@ bool PetStore::processData(const std::string& filename, //Reference vectors from
     *************************************************************/
 
 bool PetStore::writeSummary(const std::string& filename, //Reference vectors from the main
-                            std::fstream& myFile,
+                            std::ofstream& outFile,
                             std::vector<std::string>& petStoreName,
                             std::vector<std::string>& petName,
                             std::vector<std::string>& petType,
@@ -102,28 +102,28 @@ bool PetStore::writeSummary(const std::string& filename, //Reference vectors fro
     getUniqueStoreNames(petStoreName, uniquePetStoreName); //Get the vector to sort only unique elements in alphabetic order
     getNumberofPetsByStore(petStoreName, uniquePetStoreName, numberOfPetsAtStore); //Get the vector for each pet store and how many times they were repeated
 
-    if (fileOpen(filename, myFile)) { //Open the file and format it
-        myFile << "Pet Store CSV Summary Report" << std::endl;
-        myFile << "----------------------------" << std::endl << std::endl;
-        myFile << "Pet Stores: ";
+    if (fileWrite(filename, outFile)) { //Open the file and format it
+        outFile << "Pet Store CSV Summary Report" << std::endl;
+        outFile << "----------------------------" << std::endl << std::endl;
+        outFile << "Pet Stores: ";
         
         for (size_t i = 0; i < uniquePetStoreName.size(); i++) {
-            myFile << uniquePetStoreName[i];
+            outFile << uniquePetStoreName[i];
             if (i < uniquePetStoreName.size() - 1) {
-                myFile << ", ";
+                outFile << ", ";
             }
         }
-        myFile << std::endl;
+        outFile << std::endl;
         
         int mostPetsInStoreIndex = getStoreWithMostPets(petStoreName, uniquePetStoreName, numberOfPetsAtStore);
 
-        myFile << "Total number of pets: " << getNumberOfPets(petType) << std::endl << std::endl;
-        myFile << "Pet store with the most pets: " << uniquePetStoreName[mostPetsInStoreIndex] << std::endl;
-        myFile << "Number of pets at " << uniquePetStoreName[mostPetsInStoreIndex] << ": " << numberOfPetsAtStore[mostPetsInStoreIndex] << std::endl << std::endl;
-        myFile << "Pet average days on site across all stores: " << getAverageNumberOfDays(daysAtStore) << std::endl;
-        myFile << "Employee of the month choice: \"" << randomPetName(petName) << "\"" << std::endl;
+        outFile << "Total number of pets: " << getNumberOfPets(petType) << std::endl << std::endl;
+        outFile << "Pet store with the most pets: " << uniquePetStoreName[mostPetsInStoreIndex] << std::endl;
+        outFile << "Number of pets at " << uniquePetStoreName[mostPetsInStoreIndex] << ": " << numberOfPetsAtStore[mostPetsInStoreIndex] << std::endl << std::endl;
+        outFile << "Pet average days on site across all stores: " << getAverageNumberOfDays(daysAtStore) << std::endl;
+        outFile << "Employee of the month choice: \"" << randomPetName(petName) << "\"" << std::endl;
 
-        fileClose(myFile); //Close the file
+        outFile.close(); //Close the file
 
         std::cout<< "Done!" <<std::endl;
         return true;
@@ -147,15 +147,36 @@ bool PetStore::writeSummary(const std::string& filename, //Reference vectors fro
     * Post: Working file
     *************************************************************/
 
-bool PetStore::fileOpen(const std::string& filename, std::fstream& myFile) {
-    myFile.open(filename); //Open a file
+bool PetStore::fileOpen(const std::string& filename, std::fstream& inFile) {
+	inFile.open(filename);
 
-    if(!myFile){ //If the file doesnt exist, make it
-        myFile.open(filename,std::fstream::out);
+	if (inFile.is_open())
+	{
+		return true;
+	}
+	return false;
+}
+
+bool PetStore::fileWrite(const std::string& filename, std::ofstream& outFile){
+    outFile.open(filename, std::ofstream::out | std::ofstream::trunc ); 
+
+    if (!outFile.is_open()) {
+        outFile.clear();
+
+        outFile.open(filename, std::ofstream::out);
+
+        if (!outFile.is_open()) { 
+            return false; 
+        }
+
+        outFile.close();
+        outFile.open(filename, std::ios::in | std::ios::out);
     }
 
-    return myFile.is_open();
+    return outFile.is_open();
+
 }
+
 
    /*************************************************************
     * Function: getData ()

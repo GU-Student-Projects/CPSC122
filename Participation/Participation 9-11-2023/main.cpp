@@ -21,8 +21,8 @@ int main()
 
 	if (!inputfileIsOpen)
 	{
-		std::cout << "Input file failed to open successfully..." << std::endl;
-		exit(1);
+		std::cerr << "Input file failed to open successfully..." << std::endl;
+		return 1;
 	}
 
     parseLine(infile);
