@@ -23,7 +23,7 @@ Description: This cpp contains all of the implementations of functions
 void clearScreen();
 bool fileOpen(const std::string& filename, std::ifstream& inFile);
 bool fileWrite(const std::string& filename, std::ofstream& outFile);
-void getDataFromCSV(std::ifstream& inFile, 
+int* getDataFromCSV(std::ifstream& inFile, 
                     std::vector<std::string>& headers,
                     std::vector<std::string>& petStoreNames,
                     std::vector<std::string>& petNames,
@@ -32,15 +32,17 @@ void getDataFromCSV(std::ifstream& inFile,
                     int* numDaysAtStoreSize);
 void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers);
 int* pushBackInteger(int* originalArray, int* arraySize, int newValue );
-bool processData(const std::string& filename, //Reference vectors from the main
+int* processData(const std::string& filename, //Reference vectors from the main
                         std::ifstream& inFile,
                         std::vector<std::string>& headers,
-                        std::vector<std::string>& petStoreName,
-                        std::vector<std::string>& petName,
-                        std::vector<std::string>& petType,
+                        std::vector<std::string>& petStoreNames,
+                        std::vector<std::string>& petNames,
+                        std::vector<std::string>& petTypes,
                         int* numDaysAtStorePtr,
                         int* numDaysAtStoreSize);
-
+int getNumberOfPets(std::vector<std::string>& petTypes);
+int getAverageNumberOfDays(int* numDaysAtStorePtr, int* numDaysAtStoreSize);
+std::string randomPetName(std::vector<std::string>& petNames);
 
 
 #endif
