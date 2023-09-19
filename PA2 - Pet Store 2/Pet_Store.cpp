@@ -19,6 +19,8 @@ int main(){
     std::ifstream inFile;
     std::ofstream outFile;
 
+    srand(time(NULL)); //generate seed
+
    numDaysAtStorePtr = processData(infilename, inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize);
     if (!numDaysAtStore){
         std::cerr << "A fatal error has occured"<<std::endl; //if an error through the error and end the program

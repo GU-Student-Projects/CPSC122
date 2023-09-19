@@ -49,6 +49,7 @@ int* getNumOfPetsAtStores(const std::vector<std::string>& petStoreNames,
                             const std::vector<std::string> uniquePetStoreNames, 
                             int* uniquePetStoreNameCountsPtr, 
                             int* uniquePetStoreNameCountsSize);
+void alphabetizePetNames(const std::vector<std::string>& petNames, std::vector<std::string>& alphabetizedPetNames);                            
 bool writeSummary(const std::string& filename,
                         std::ofstream& outFile,
                         std::vector<std::string>& petStoreName,

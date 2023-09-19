@@ -201,7 +201,7 @@ int* processData(const std::string filename, //Reference vectors from the main
     if (fileOpen(filename, inFile)) { //If the file can open run the following
         numDaysAtStorePtr = getDataFromCSV(inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize); //Get the data from CSV to the indivudal vectors
 
-        //clearScreen(); //Clear screen
+        clearScreen(); //Clear screen
         
         std::cout << "Processed " << headers.size() << " header columns: "; //Format the headers with commas
         for (size_t i = 0; i < headers.size(); i++) {
@@ -373,23 +373,67 @@ int getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int*
     return indexOfMaximum;
 }
 
-bool writeSummary(const std::string& filename, //Reference vectors from the main
+    /*************************************************************
+    * Function: alphabetizePetNames ()
+    * Date Created: 9/19/23
+    * Date Last Modified: 9/19/23
+    * Description: This function does a bubble search to swap until 
+    * sorted alphabetically
+    * Input parameters: pet name vectors and an empty vector
+    * Returns: alphabetically sorted names
+    * Pre: Data from CSV must be input into vectors
+    * Post: populated vector.
+    *************************************************************/
+
+void alphabetizePetNames(const std::vector<std::string>& petNames, std::vector<std::string>& alphabetizedPetNames){
+    alphabetizedPetNames = petNames;
+
+    bool bubbleSwap;
+
+    do{
+        bubbleSwap = false;
+        for (size_t i = 0; i < (alphabetizedPetNames.size() - 1); i++){
+            if (alphabetizedPetNames[i] > alphabetizedPetNames[i+1]){
+                std::string tempName = alphabetizedPetNames[i];
+                alphabetizedPetNames[i] = alphabetizedPetNames[i + 1];
+                alphabetizedPetNames[i + 1] = tempName;
+                bubbleSwap = true;
+            }
+        }
+    } while(bubbleSwap);
+}
+    
+
+    /*************************************************************
+    * Function: writeSummary ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/19/23
+    * Description: This function process the vectors/arrays and outputs
+    * the result to the a TXT file
+    * Input parameters: column vectors
+    * Returns: T/F if sucessful and outputs to terminal
+    * Pre: Data from CSV must be input into vectors
+    * Post: Processed vectors in a TXT.
+    *************************************************************/
+
+bool writeSummary(const std::string& filename, //Reference vectors and pointers from the main
                         std::ofstream& outFile,
-                        std::vector<std::string>& petStoreName,
-                        std::vector<std::string>& petName,
-                        std::vector<std::string>& petType,
+                        std::vector<std::string>& petStoreNames,
+                        std::vector<std::string>& petNames,
+                        std::vector<std::string>& petTypes,
                         int* numDaysAtStorePtr,
                         int* numDaysAtStoreSize) {
 
     int uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
     int* uniquePetStoreNameCountsSize = &uniquePetStoreNameCounts;
     int* uniquePetStoreNameCountsPtr = new int[*uniquePetStoreNameCountsSize]; //This variable is a pointer to your dynamic integer array
-    std::vector<std::string> uniquePetStoreNames;
+    std::vector<std::string> uniquePetStoreNames, alphabetizedPetNames;
     
 
     std::cout<< "Generating summary report..." <<std::endl<<std::endl;
-    getUniqueNames(petStoreName, uniquePetStoreNames); //Get the vector to sort only unique elements in alphabetic order
-    uniquePetStoreNameCountsPtr = getNumOfPetsAtStores(petStoreName, uniquePetStoreNames, uniquePetStoreNameCountsPtr, uniquePetStoreNameCountsSize); //Get the dynamic array for each pet store and how many times they were repeated
+    getUniqueNames(petStoreNames, uniquePetStoreNames); //Get the vector to sort only unique elements in alphabetic order
+    uniquePetStoreNameCountsPtr = getNumOfPetsAtStores(petStoreNames, uniquePetStoreNames, uniquePetStoreNameCountsPtr, uniquePetStoreNameCountsSize); //Get the dynamic array for each pet store and how many times they were repeated
+    alphabetizePetNames(petNames, alphabetizedPetNames);
 
     if (fileWrite(filename, outFile)) { //Open the file and format it
         outFile << "Pet Store CSV Summary Report" << std::endl;
@@ -406,11 +450,19 @@ bool writeSummary(const std::string& filename, //Reference vectors from the main
         
         int mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
 
-        outFile << "Total number of pets: " << getNumberOfPets(petType) << std::endl << std::endl;
+        outFile << "Total number of pets: " << getNumberOfPets(petTypes) << std::endl << std::endl;
         outFile << "Pet store with the most pets: " << uniquePetStoreNames[mostPetsInStoreIndex] << std::endl;
         outFile << "Number of pets at " << uniquePetStoreNames[mostPetsInStoreIndex] << ": " << uniquePetStoreNameCountsPtr[mostPetsInStoreIndex] << std::endl << std::endl;
         outFile << "Pet average days on site across all stores: " << getAverageNumberOfDays(numDaysAtStorePtr,numDaysAtStoreSize) << std::endl;
-        outFile << "Employee of the month choice: \"" << randomPetName(petName) << "\"" << std::endl;
+        outFile << "Employee of the month choice: \"" << randomPetName(petNames) << "\"" << std::endl << std::endl;
+        outFile << "Current Pet Inventory: ";
+
+        for (size_t i = 0; i < petNames.size(); i++) {
+            outFile << alphabetizedPetNames[i];
+            if (i < alphabetizedPetNames.size() - 1) {
+                outFile << ", ";
+            }
+        }
 
         outFile.close(); //Close the file
 
