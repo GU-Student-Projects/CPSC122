@@ -39,7 +39,7 @@ void clearScreen(){ //function to clear terminal
     * Post: Working file
     *************************************************************/
 
-bool fileOpen(const std::string& filename, std::ifstream& inFile) {
+bool fileOpen(const std::string filename, std::ifstream& inFile) {
 	inFile.open(filename);
 
 	if (inFile.is_open())
@@ -61,7 +61,7 @@ bool fileOpen(const std::string& filename, std::ifstream& inFile) {
     * Post: Working file
     *************************************************************/
 
-bool fileWrite(const std::string& filename, std::ofstream& outFile){
+bool fileWrite(const std::string filename, std::ofstream& outFile){
     outFile.open(filename, std::ofstream::out | std::ofstream::trunc ); 
 
     if (!outFile.is_open()) {
@@ -189,7 +189,7 @@ int* pushBackInteger(int* originalArray, int* arraySize, int newValue ){
     * Post: Processed vectors in the terminal.
     *************************************************************/
 
-int* processData(const std::string& filename, //Reference vectors from the main
+int* processData(const std::string filename, //Reference vectors from the main
                         std::ifstream& inFile,
                         std::vector<std::string>& headers,
                         std::vector<std::string>& petStoreNames,

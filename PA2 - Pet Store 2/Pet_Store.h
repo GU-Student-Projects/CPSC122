@@ -21,8 +21,8 @@ Description: This cpp contains all of the implementations of functions
 #endif
 
 void clearScreen();
-bool fileOpen(const std::string& filename, std::ifstream& inFile);
-bool fileWrite(const std::string& filename, std::ofstream& outFile);
+bool fileOpen(const std::string filename, std::ifstream& inFile);
+bool fileWrite(const std::string filename, std::ofstream& outFile);
 int* getDataFromCSV(std::ifstream& inFile, 
                     std::vector<std::string>& headers,
                     std::vector<std::string>& petStoreNames,
@@ -32,7 +32,7 @@ int* getDataFromCSV(std::ifstream& inFile,
                     int* numDaysAtStoreSize);
 void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers);
 int* pushBackInteger(int* originalArray, int* arraySize, int newValue );
-int* processData(const std::string& filename, //Reference vectors from the main
+int* processData(const std::string filename, //Reference vectors from the main
                         std::ifstream& inFile,
                         std::vector<std::string>& headers,
                         std::vector<std::string>& petStoreNames,

@@ -12,15 +12,17 @@ int main(){
     int numDaysAtStore = 0; //This variable keeps track of the size of your numDays dynamic array
     int* numDaysAtStoreSize = &numDaysAtStore;
     int* numDaysAtStorePtr = new int[*numDaysAtStoreSize];//This variable is a pointer to your dynamic integer array.
-    int uniquePetStoreNameCountsSize = 0; //This variable keeps track of the size of your unique counts dynamic array
-    int* uniquePetStoreNameCountsPtr =nullptr; //This variable is a pointer to your dynamic integer array
+    int uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
+    int* uniquePetStoreNameCountsSize = &uniquePetStoreNameCounts;
+    int* uniquePetStoreNameCountsPtr = new int[*uniquePetStoreNameCountsSize]; //This variable is a pointer to your dynamic integer array
     std::vector<std::string> headers, petStoreNames, petNames, petTypes, uniquePetStoreNames, alphabetizedPetNames;
 
-    std::string filename = "petstoredata.csv";
+    std::string infilename = "petstoredata.csv";
+    std::string outfilename = "petreport.txt";
     std::ifstream inFile;
     std::ofstream outFile;
 
-   numDaysAtStorePtr = processData(filename, inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize);
+   numDaysAtStorePtr = processData(infilename, inFile, headers, petStoreNames, petNames, petTypes, numDaysAtStorePtr, numDaysAtStoreSize);
     if (!numDaysAtStore){
         std::cerr << "A fatal error has occured"<<std::endl; //if an error through the error and end the program
         return 1;   
