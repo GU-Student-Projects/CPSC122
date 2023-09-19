@@ -280,3 +280,146 @@ std::string randomPetName(std::vector<std::string>& petNames) {
     int randomPet = rand() % petNames.size(); //generate random employee of the month
     return petNames[randomPet];
 }
+
+     /*************************************************************
+    * Function: stringIsInVector ()
+    * Date Created: 9/19/23
+    * Date Last Modified: 9/19/23
+    * Description: Determines if a string exists in a vector
+    * Input parameters: vector, string
+    * Returns: T/F string exists
+    * Pre: populated vectors
+    * Post: T/F string is in vector
+    *************************************************************/ 
+
+bool stringIsInVector(std::vector<std::string> searchVector, std::string targetWord){
+    for (size_t i = 0; i < searchVector.size(); i++){
+        if (targetWord == searchVector[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
+     /*************************************************************
+    * Function: getUniqueNames ()
+    * Date Created: 9/19/23
+    * Date Last Modified: 9/19/23
+    * Description: Adds unique names to a new vector
+    * Input parameters: vector
+    * Returns: filled vector
+    * Pre: populated names vectors
+    * Post: populated unique names vector
+    *************************************************************/ 
+
+void getUniqueNames(const std::vector<std::string>& petStoreNames, std::vector<std::string>& uniquePetStoreNames) {
+    for (size_t i = 0; i < petStoreNames.size(); i++) {
+        if (!stringIsInVector(uniquePetStoreNames, petStoreNames[i])) {
+            uniquePetStoreNames.push_back(petStoreNames[i]);
+        }
+    }
+}
+
+    /*************************************************************
+    * Function: getOfPetsAtStores( ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/19/23
+    * Description: compares the vectors of uniquePetStoreName and petStoreName and counts
+    * how many times a petstore name occurs
+    * Input parameters: petStoreName uniquePetStoreName & numberOfPetsAtStore dynamic array
+    * Returns: populated uniquePetStoreNameCountsPtr
+    * Pre: Populated vector with data from CSV
+    * Post: uniquePetStoreNameCountsPtr dynamic array
+    *************************************************************/  
+
+int* getNumOfPetsAtStores(const std::vector<std::string>& petStoreNames, 
+                            const std::vector<std::string> uniquePetStoreNames, 
+                            int* uniquePetStoreNameCountsPtr, 
+                            int* uniquePetStoreNameCountsSize){
+    for (size_t i = 0; i < uniquePetStoreNames.size(); i++) {
+        int tempValue = 0;
+        int* tempPtr = &tempValue;
+        for (size_t j = 0; j < petStoreNames.size(); j++) {
+            if (uniquePetStoreNames[i] == petStoreNames[j]) {
+                (*tempPtr)++;
+            }
+        } //Go through all of the pet store names and match it with the unique names. If there is a duplicate it is added to the count
+        uniquePetStoreNameCountsPtr = pushBackInteger(uniquePetStoreNameCountsPtr, uniquePetStoreNameCountsSize, *tempPtr);
+    }
+    return uniquePetStoreNameCountsPtr;
+
+}
+
+    /*************************************************************
+    * Function: getStoreWithMostPetsIndex ()
+    * Date Created: 9/2/23
+    * Date Last Modified: 9/19/23
+    * Description: using the number of pets at store vector, find the
+    * index of the store with the maximum number of pets
+    * Input parameters: uniquePetStoreNameCountsPtr, uniquePetStoreNameCountsSize 
+    * Returns: int index of the maximum
+    * Pre: Populated vector with data from CSV
+    * Post: int index of maximum
+    *************************************************************/
+
+int getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int* uniquePetStoreNameCountsSize) {
+    int indexOfMaximum = 0;
+    for (int i = 0; i < *uniquePetStoreNameCountsSize; i++) {
+        if (uniquePetStoreNameCountsPtr[i] > uniquePetStoreNameCountsPtr[indexOfMaximum]) {
+            indexOfMaximum = i;
+        }
+    } //Match the element of the unique PetStoreName to the one with the most pets.
+
+    return indexOfMaximum;
+}
+
+bool writeSummary(const std::string& filename, //Reference vectors from the main
+                        std::ofstream& outFile,
+                        std::vector<std::string>& petStoreName,
+                        std::vector<std::string>& petName,
+                        std::vector<std::string>& petType,
+                        int* numDaysAtStorePtr,
+                        int* numDaysAtStoreSize) {
+
+    int uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
+    int* uniquePetStoreNameCountsSize = &uniquePetStoreNameCounts;
+    int* uniquePetStoreNameCountsPtr = new int[*uniquePetStoreNameCountsSize]; //This variable is a pointer to your dynamic integer array
+    std::vector<std::string> uniquePetStoreNames;
+    
+
+    std::cout<< "Generating summary report..." <<std::endl<<std::endl;
+    getUniqueNames(petStoreName, uniquePetStoreNames); //Get the vector to sort only unique elements in alphabetic order
+    uniquePetStoreNameCountsPtr = getNumOfPetsAtStores(petStoreName, uniquePetStoreNames, uniquePetStoreNameCountsPtr, uniquePetStoreNameCountsSize); //Get the dynamic array for each pet store and how many times they were repeated
+
+    if (fileWrite(filename, outFile)) { //Open the file and format it
+        outFile << "Pet Store CSV Summary Report" << std::endl;
+        outFile << "----------------------------" << std::endl << std::endl;
+        outFile << "Pet Stores: ";
+        
+        for (int i = 0; i < *uniquePetStoreNameCountsSize; i++) {
+            outFile << uniquePetStoreNames[i];
+            if (i < *uniquePetStoreNameCountsSize - 1) {
+                outFile << ", ";
+            }
+        }
+        outFile << std::endl;
+        
+        int mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
+
+        outFile << "Total number of pets: " << getNumberOfPets(petType) << std::endl << std::endl;
+        outFile << "Pet store with the most pets: " << uniquePetStoreNames[mostPetsInStoreIndex] << std::endl;
+        outFile << "Number of pets at " << uniquePetStoreNames[mostPetsInStoreIndex] << ": " << uniquePetStoreNameCountsPtr[mostPetsInStoreIndex] << std::endl << std::endl;
+        outFile << "Pet average days on site across all stores: " << getAverageNumberOfDays(numDaysAtStorePtr,numDaysAtStoreSize) << std::endl;
+        outFile << "Employee of the month choice: \"" << randomPetName(petName) << "\"" << std::endl;
+
+        outFile.close(); //Close the file
+
+        std::cout<< "Done!" <<std::endl;
+        return true;
+    } else {
+        std::cerr << "A fatal error has been encountered opening \"" + filename + "\". Please make sure you have the appropriate permissions to read/write." << std::endl;
+        return false; //If there is an error send a message and return false
+    }
+
+    return true;
+}
