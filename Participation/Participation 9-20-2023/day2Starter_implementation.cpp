@@ -37,6 +37,17 @@ int linearSearch(int arrayToSearch[], int size, int targetValue)
 	return position;
 }
 
+    /*************************************************************
+    * Function: binarySearch ()
+    * Date Created: 9/20/23
+    * Date Last Modified: 9/20/23
+    * Description: From the middle, find the target value, if it is
+    * less than, discard the right hand side and vise versa.
+    * Input parameters: populated array, array size, and target value
+    * Returns: target value index
+    * Pre: Populated array
+    * Post: targetValue index
+    *************************************************************/
 int bindarySearch(int arrayToSearch[], int size, int targetValue)
 {
     int first = 0,
