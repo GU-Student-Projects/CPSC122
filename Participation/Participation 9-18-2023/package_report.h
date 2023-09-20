@@ -10,8 +10,8 @@ If the functions, namespace and libraries have not been added, add them to the c
 This prevents double inclusion on multiple files which can slow down the program
 */
 
-#ifndef MAIN_H
-#define MAIN_H 
+#ifndef PACKAGE_REPORT_H
+#define PACKAGE_REPORT_H 
 
 #include <iostream> //need for console IO
 #include <string> //don't forget to include libraries if we are using their functions!

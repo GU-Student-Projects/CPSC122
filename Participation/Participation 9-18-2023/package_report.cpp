@@ -7,7 +7,7 @@
  I do not have any questions.
 */
 
-#include "main.h"
+#include "package_report.h"
 
 int main() {
 	string inputFileName = "packages.log";

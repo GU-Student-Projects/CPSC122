@@ -5,7 +5,7 @@
  Notes:		
 */
 
-#include "main.h"
+#include "package_report.h"
 
      /*************************************************************
     * Function: importPackagesLog ()
