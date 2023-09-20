@@ -386,18 +386,18 @@ int getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int*
     *************************************************************/
 
 void alphabetizePetNames(const std::vector<std::string>& petNames, std::vector<std::string>& alphabetizedPetNames){
-    alphabetizedPetNames = petNames;
+    alphabetizedPetNames = petNames; //copy all contents from pet names to alphabetized pet names
 
     bool bubbleSwap;
 
-    do{
+    do{ //using a do while loop to atleast run through the list once and make sure everything is ordered correctly
         bubbleSwap = false;
         for (size_t i = 0; i < (alphabetizedPetNames.size() - 1); i++){
             if (alphabetizedPetNames[i] > alphabetizedPetNames[i+1]){
-                std::string tempName = alphabetizedPetNames[i];
+                std::string tempName = alphabetizedPetNames[i]; //swap the values
                 alphabetizedPetNames[i] = alphabetizedPetNames[i + 1];
                 alphabetizedPetNames[i + 1] = tempName;
-                bubbleSwap = true;
+                bubbleSwap = true; //if something is not placed correctly, swap it and run again
             }
         }
     } while(bubbleSwap);
@@ -424,6 +424,7 @@ bool writeSummary(const std::string& filename, //Reference vectors and pointers 
                         int* numDaysAtStorePtr,
                         int* numDaysAtStoreSize) {
 
+    int mostPetsInStoreIndex;
     int uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
     int* uniquePetStoreNameCountsSize = &uniquePetStoreNameCounts;
     int* uniquePetStoreNameCountsPtr = new int[*uniquePetStoreNameCountsSize]; //This variable is a pointer to your dynamic integer array
@@ -448,7 +449,7 @@ bool writeSummary(const std::string& filename, //Reference vectors and pointers 
         }
         outFile << std::endl;
         
-        int mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
+        mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
 
         outFile << "Total number of pets: " << getNumberOfPets(petTypes) << std::endl << std::endl;
         outFile << "Pet store with the most pets: " << uniquePetStoreNames[mostPetsInStoreIndex] << std::endl;

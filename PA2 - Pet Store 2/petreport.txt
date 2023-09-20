@@ -8,6 +8,6 @@ Pet store with the most pets: Fur Get Me Not
 Number of pets at Fur Get Me Not: 3
 
 Pet average days on site across all stores: 31
-Employee of the month choice: "Jean-Clawed Van Damme"
+Employee of the month choice: "Severus Snake"
 
 Current Pet Inventory: Barktholamew, Chris P. Bacon, Jack Meower, Jean-Clawed Van Damme, Lame Duck, Mary Puppins, Severus Snake
