@@ -63,6 +63,7 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "typeinfo": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "__bit_reference": "cpp"
     }
 }
