@@ -103,14 +103,14 @@ int* getDataFromCSV(std::ifstream& inFile,
     
     std::string dataLine, cell;
     int numCell;
-    getHeaderLine(inFile, headers);
+    getHeaderLine(inFile, headers); //get headline vector
 
-    while(std::getline(inFile, dataLine)){
+    while(std::getline(inFile, dataLine)){ //while there are lines, go through each line cell by cell
         std::istringstream dataToParse(dataLine);
         for (int i = 0; i < 4; i++){
-            std::getline(dataToParse, cell, ',');
+            std::getline(dataToParse, cell, ','); //during each line, iterate over it 4 times for the 4 columns
             if (i == 0){
-                petStoreNames.push_back(cell);
+                petStoreNames.push_back(cell); //depending on the iteration a different pushback is used
             }
             else if (i == 1){
                 petNames.push_back(cell);
@@ -121,11 +121,11 @@ int* getDataFromCSV(std::ifstream& inFile,
             else if (i == 3){
                 std::istringstream numStream(cell);
                 numStream >> numCell;
-                numDaysAtStorePtr = pushBackInteger(numDaysAtStorePtr, numDaysAtStoreSize, numCell);
+                numDaysAtStorePtr = pushBackInteger(numDaysAtStorePtr, numDaysAtStoreSize, numCell);//set a new arrayPtr equal to the original pointer
             }                        
         }      
     }
-    return numDaysAtStorePtr;
+    return numDaysAtStorePtr; //pass through the pointer array
 }
 
    /*************************************************************
@@ -162,18 +162,18 @@ void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers){
     *************************************************************/
 
 int* pushBackInteger(int* originalArray, int* arraySize, int newValue ){
-    (*arraySize)++;
-    int* newArray = new int[*arraySize];
+    (*arraySize)++; //increase size of the array
+    int* newArray = new int[*arraySize]; //create a new array with the larger size
     for (int i = 0; i < (*arraySize - 1); i++){
-        newArray[i] = originalArray[i];
+        newArray[i] = originalArray[i]; //copy all of the content from the original array into the new array
     }
-    newArray[*arraySize-1] = newValue;
+    newArray[*arraySize-1] = newValue; //add the new value to the last element of the new vector
 
     if (originalArray != nullptr) {
-        delete[] originalArray;
+        delete[] originalArray; //if the array is not null, delete it
     }
 
-    return newArray;
+    return newArray; //return the new array
 
 }
 
@@ -220,7 +220,7 @@ int* processData(const std::string filename, //Reference vectors from the main
         std::cout << "All pet store data processed!" <<std::endl << std::endl;
 
         inFile.close(); //Close the file
-        return numDaysAtStorePtr;
+        return numDaysAtStorePtr; //pass the array back to main
     } else {
         std::cerr << "The file " + filename + " has encountered an error. Please make sure the file is in the correct directory and you have the appropriate permissions to read." << std::endl;
         return 0; //If there was a problem show the error
@@ -240,7 +240,7 @@ int* processData(const std::string filename, //Reference vectors from the main
 
 int* getNumberOfPets(std::vector<std::string>& petTypes) {
     int numberOfPets = petTypes.size();
-    int* numberOfPetsPtr = &numberOfPets;
+    int* numberOfPetsPtr = &numberOfPets; //create a pointer referencing the int value of petTypes size
     return numberOfPetsPtr;
 }
 
@@ -256,15 +256,15 @@ int* getNumberOfPets(std::vector<std::string>& petTypes) {
     *************************************************************/
 
 int* getAverageNumberOfDays(int* numDaysAtStorePtr, int* numDaysAtStoreSize) {
-    if (*numDaysAtStoreSize==0) {//If there is no information skipped
+    if (*numDaysAtStoreSize==0) {//If there is no information, exit the function
         return 0;
     }
     int averageNumberOfDays = 0;
     int* averageNumberOfDaysPtr = &averageNumberOfDays;
     for (int i = 0; i < *numDaysAtStoreSize; i++) {
-        *averageNumberOfDaysPtr += numDaysAtStorePtr[i];
+        *averageNumberOfDaysPtr += numDaysAtStorePtr[i]; //calculate sum
     }
-    *averageNumberOfDaysPtr /= *numDaysAtStoreSize;
+    *averageNumberOfDaysPtr /= *numDaysAtStoreSize; //divide by count
     return averageNumberOfDaysPtr; //Find the average
 }
 
@@ -281,7 +281,7 @@ int* getAverageNumberOfDays(int* numDaysAtStorePtr, int* numDaysAtStoreSize) {
 
 std::string randomPetName(std::vector<std::string>& petNames) {
     int randomPet = rand() % petNames.size(); //generate random employee of the month
-    int* randomPetPtr = &randomPet;
+    int* randomPetPtr = &randomPet; //pointer for the integer
     return petNames[*randomPetPtr];
 }
 
@@ -298,7 +298,7 @@ std::string randomPetName(std::vector<std::string>& petNames) {
 
 bool stringIsInVector(std::vector<std::string> searchVector, std::string targetWord){
     for (size_t i = 0; i < searchVector.size(); i++){
-        if (targetWord == searchVector[i]){
+        if (targetWord == searchVector[i]){ //search through a vector to see if the target element exists
             return true;
         }
     }
@@ -318,7 +318,7 @@ bool stringIsInVector(std::vector<std::string> searchVector, std::string targetW
 
 void getUniqueNames(const std::vector<std::string>& petStoreNames, std::vector<std::string>& uniquePetStoreNames) {
     for (size_t i = 0; i < petStoreNames.size(); i++) {
-        if (!stringIsInVector(uniquePetStoreNames, petStoreNames[i])) {
+        if (!stringIsInVector(uniquePetStoreNames, petStoreNames[i])) { //uses the stringIsInVector function to find all names
             uniquePetStoreNames.push_back(petStoreNames[i]);
         }
     }
