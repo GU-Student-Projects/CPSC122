@@ -14,7 +14,7 @@ void getNum(int* num);
 
 int main(){
     int num;
-    int arraySize = 0; //This variable keeps track of the size of your numDays dynamic array
+    int arraySize = 0;
     int* arraySizePtr = &arraySize;
     int* arrayPtr = new int[*arraySizePtr];
 
