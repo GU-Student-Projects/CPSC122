@@ -466,7 +466,7 @@ bool writeSummary(const std::string& filename, //Reference vectors and pointers 
         outFile << std::endl;
         
         mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
-        *indexTestPtr = *mostPetsInStoreIndex;
+        *indexTestPtr = *mostPetsInStoreIndex; //Fixes a bug where the pointer disapears after running once.
 
         outFile << "Total number of pets: " << *getNumberOfPets(petTypes) << std::endl << std::endl;
 
