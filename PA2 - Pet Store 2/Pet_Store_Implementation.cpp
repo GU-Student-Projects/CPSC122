@@ -62,19 +62,19 @@ bool fileOpen(const std::string filename, std::ifstream& inFile) {
     *************************************************************/
 
 bool fileWrite(const std::string filename, std::ofstream& outFile){
-    outFile.open(filename, std::ofstream::out | std::ofstream::trunc ); 
+    outFile.open(filename, std::ofstream::out | std::ofstream::trunc ); //open a file to write to
 
     if (!outFile.is_open()) {
-        outFile.clear();
+        outFile.clear(); //if it does not exist
 
-        outFile.open(filename, std::ofstream::out);
+        outFile.open(filename, std::ofstream::out); //create file
 
         if (!outFile.is_open()) { 
-            return false; 
+            return false; //after a second attempt, error the file
         }
 
-        outFile.close();
-        outFile.open(filename, std::ios::in | std::ios::out);
+        outFile.close(); //close file
+        outFile.open(filename, std::ios::in | std::ios::out); //open again
     }
 
     return outFile.is_open();
