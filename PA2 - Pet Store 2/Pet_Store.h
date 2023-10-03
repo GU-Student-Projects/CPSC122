@@ -40,7 +40,7 @@ int* processData(const std::string filename, //Reference vectors from the main
                         std::vector<std::string>& petTypes,
                         int* numDaysAtStorePtr,
                         int* numDaysAtStoreSize);
-int* getNumberOfPets(std::vector<std::string>& petTypes);
+int* getNumberOfPets(std::vector<std::string>& petTypes, int* numberOfPetsPtr);
 int* getAverageNumberOfDays(int* numDaysAtStorePtr, int* numDaysAtStoreSize);
 std::string randomPetName(std::vector<std::string>& petNames);
 bool stringIsInVector(std::vector<std::string> searchVector, std::string targetWord);
@@ -49,7 +49,7 @@ int* getNumOfPetsAtStores(const std::vector<std::string>& petStoreNames,
                             const std::vector<std::string> uniquePetStoreNames, 
                             int* uniquePetStoreNameCountsPtr, 
                             int* uniquePetStoreNameCountsSize);
-int* getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int* uniquePetStoreNameCountsSize);                         
+int* getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int* uniquePetStoreNameCountsSize, int* indexOfMaximumPtr);                         
 void alphabetizePetNames(const std::vector<std::string>& petNames, std::vector<std::string>& alphabetizedPetNames);                            
 bool writeSummary(const std::string& filename,
                         std::ofstream& outFile,

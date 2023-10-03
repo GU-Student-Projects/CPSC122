@@ -238,9 +238,9 @@ int* processData(const std::string filename, //Reference vectors from the main
     * Post: int Number of pets
     *************************************************************/
 
-int* getNumberOfPets(std::vector<std::string>& petTypes) {
+int* getNumberOfPets(std::vector<std::string>& petTypes, int* numberOfPetsPtr) {
     int numberOfPets = petTypes.size();
-    int* numberOfPetsPtr = &numberOfPets; //create a pointer referencing the int value of petTypes size
+    numberOfPetsPtr = &numberOfPets; //create a pointer referencing the int value of petTypes size
     return numberOfPetsPtr;
 }
 
@@ -366,9 +366,7 @@ int* getNumOfPetsAtStores(const std::vector<std::string>& petStoreNames,
     * Post: int index of maximum
     *************************************************************/
 
-int* getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int* uniquePetStoreNameCountsSize) {
-    int indexOfMaximum = 0;
-    int* indexOfMaximumPtr = &indexOfMaximum;
+int* getStoreWithMostPetsIndex(const int* uniquePetStoreNameCountsPtr, const int* uniquePetStoreNameCountsSize, int* indexOfMaximumPtr) {
     for (int i = 0; i < *uniquePetStoreNameCountsSize; i++) {
         if (uniquePetStoreNameCountsPtr[i] > uniquePetStoreNameCountsPtr[*indexOfMaximumPtr]) {
             *indexOfMaximumPtr = i;
@@ -428,10 +426,9 @@ bool writeSummary(const std::string& filename, //Reference vectors and pointers 
                         int* numDaysAtStorePtr,
                         int* numDaysAtStoreSize) {
 
-    int* mostPetsInStoreIndex = nullptr;
-    int indexTest = 0;
-    int* indexTestPtr = &indexTest;
-    int uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
+    int indexOfMaximum = 0, uniquePetStoreNameCounts = 0; //This variable keeps track of the size of your unique counts dynamic array
+    int* indexOfMaximumPtr = &indexOfMaximum;
+    int* numberOfPetsPtr = nullptr;
     int* uniquePetStoreNameCountsSize = &uniquePetStoreNameCounts;
     int* uniquePetStoreNameCountsPtr = new int[*uniquePetStoreNameCountsSize]; //This variable is a pointer to your dynamic integer array
     std::vector<std::string> uniquePetStoreNames, alphabetizedPetNames;
@@ -465,14 +462,13 @@ bool writeSummary(const std::string& filename, //Reference vectors and pointers 
         }
         outFile << std::endl;
         
-        mostPetsInStoreIndex = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize);
-        *indexTestPtr = *mostPetsInStoreIndex; //Fixes a bug where the pointer disapears after running once.
+        indexOfMaximumPtr = getStoreWithMostPetsIndex(uniquePetStoreNameCountsPtr,uniquePetStoreNameCountsSize, indexOfMaximumPtr);
 
-        outFile << "Total number of pets: " << *getNumberOfPets(petTypes) << std::endl << std::endl;
+        outFile << "Total number of pets: " << *getNumberOfPets(petTypes, numberOfPetsPtr) << std::endl << std::endl;
 
 
-        outFile << "Pet store with the most pets: " << uniquePetStoreNames[*indexTestPtr] << std::endl;
-        outFile << "Number of pets at " << uniquePetStoreNames[*indexTestPtr] << ": " << uniquePetStoreNameCountsPtr[*indexTestPtr] << std::endl << std::endl;
+        outFile << "Pet store with the most pets: " << uniquePetStoreNames[*indexOfMaximumPtr] << std::endl;
+        outFile << "Number of pets at " << uniquePetStoreNames[*indexOfMaximumPtr] << ": " << uniquePetStoreNameCountsPtr[*indexOfMaximumPtr] << std::endl << std::endl;
         outFile << "Pet average days on site across all stores: " << *getAverageNumberOfDays(numDaysAtStorePtr,numDaysAtStoreSize) << std::endl;
         outFile << "Employee of the month choice: \"" << randomPetName(petNames) << "\"" << std::endl << std::endl;
         outFile << "Current Pet Inventory: ";
