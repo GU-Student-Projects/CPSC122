@@ -107,6 +107,10 @@ int* getDataFromCSV(std::ifstream& inFile,
 
     while(std::getline(inFile, dataLine)){ //while there are lines, go through each line cell by cell
         std::istringstream dataToParse(dataLine);
+
+        if (dataLine.empty()){
+            break;
+        }
         for (int i = 0; i < 4; i++){
             std::getline(dataToParse, cell, ','); //during each line, iterate over it 4 times for the 4 columns
             if (i == 0){
