@@ -1,6 +1,0 @@
-Pet Store CSV Summary Report
-----------------------------
-
-Pet Stores: Fur Get Me Not, Pick of the Litter, For Pet's Sake
-Total number of pets: 7
-
