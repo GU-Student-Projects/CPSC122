@@ -45,33 +45,6 @@ bool fileOpen(const char* filename, std::ifstream& inFile) {
 }
 
    /*************************************************************
-    * Function: pushBackInteger ()
-    * Date Created: 9/17/23
-    * Date Last Modified: 9/18/23
-    * Description: adjusts the dynamically assigned array for an
-    * increase in size and adds the new value
-    * Returns: increased array size with push back integer
-    * Pre: original array exists, and the new value is present
-    * Post: completed array
-    *************************************************************/
-
-int* pushBackInteger(int* originalArray, int* arraySize, int newValue ){
-    (*arraySize)++; //increase size of the array
-    int* newArray = new int[*arraySize]; //create a new array with the larger size
-    for (int i = 0; i < (*arraySize - 1); i++){
-        newArray[i] = originalArray[i]; //copy all of the content from the original array into the new array
-    }
-    newArray[*arraySize-1] = newValue; //add the new value to the last element of the new vector
-
-    if (originalArray != nullptr) {
-        delete[] originalArray; //if the array is not null, delete it
-    }
-
-    return newArray; //return the new array
-
-}
-
-   /*************************************************************
     * Function: pushBackPlayerCard()
     * Date Created: 10/10/23
     * Date Last Modified: 10/10/23
@@ -98,17 +71,17 @@ void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard n
 }
 
 void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards) {
-    char lastName[30];
+    char lastName[MAXIMUM_CHARACTERS];
     PlayerCard newUser;
 
     while (inFile >> newUser.playerID) {
         inFile >> newUser.playerName;
         inFile >> lastName;
 
-        strncat(newUser.playerName, " ", sizeof(newUser.playerName) - strlen(newUser.playerName) - 1);
-        strncat(newUser.playerName, lastName, sizeof(newUser.playerName) - strlen(newUser.playerName) - 1);
+        strncat(newUser.playerName, " ", MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1);
+        strncat(newUser.playerName, lastName, MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1);
 
-        newUser.playerName[sizeof(newUser.playerName) - 1] = '\0';
+        newUser.playerName[MAXIMUM_CHARACTERS - 1] = '\0';
         inFile >> newUser.totalScore;
         inFile >> newUser.numberOfGames;
         inFile >> newUser.averageScore;
@@ -116,3 +89,78 @@ void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int*
         pushBackPlayerCard(scoreCards, numCards, newUser);
     }
 }
+
+void initializePlayerScoreCard(PlayerCard* player) {
+    char lastName[MAXIMUM_CHARACTERS];
+
+    player->playerID = std::rand() % 9000 + 1000;
+    std::cout << "What is your first and last name? ";
+    std::cin >> player->playerName >> lastName;
+
+    int availableSpace = MAXIMUM_CHARACTERS - strlen(player->playerName) - 1;
+    if (availableSpace > 0) {
+        strncat(player->playerName, " ", availableSpace);
+        strncat(player->playerName, lastName, availableSpace);
+    }
+
+    player->playerName[MAXIMUM_CHARACTERS- 1] = '\0';
+
+    player->totalScore = 0;
+    player->averageScore = 0.0;
+    player->numberOfGames = 0;
+}
+
+bool getDartRounds(PlayerCard& player) {
+    int randomScore = (std::rand() % 3) + 1;
+    char select;
+    bool validAnswer = false;
+
+    std::cout << "You threw a dart!" << std::endl;
+
+    if (randomScore == 2) {
+        int score = (std::rand() % 5) + 1;
+        std::cout << "Oof, nice try but you hit a " << score << ". You should try again!" << std::endl;
+        player.totalScore += score;
+    }
+    else if (randomScore == 3) {
+        int score = (std::rand() % 5) + 6;
+        std::cout << "Nice! You hit a " << score << ". Time to move on, I think." << std::endl;
+        player.totalScore += score;
+    }
+    else {
+        std::cout << "Oh man... you missed" << std::endl;
+    }
+
+    player.numberOfGames++;
+
+    std::cout << "Keep playing? (y/n): ";
+    while (!validAnswer) {
+        std::cin >> select;
+
+        if (select == 'y') {
+            validAnswer = true;
+            return true;
+        }
+        else if (select == 'n') {
+            validAnswer = true;
+            player.averageScore = double(player.totalScore)/player.numberOfGames;
+            return false;
+        }
+        else {
+            std::cout << "Please select either 'y' or 'n'" << std::endl;
+        }
+    }
+    return false; 
+}
+
+void printPlayerScoreCard(const PlayerCard& player){
+    std::cout<<"-----------------------|PID:"<<player.playerID<<"|"<<std::endl;
+    std::cout<<player.playerName<<"'s Score Card"<<std::endl;
+    std::cout<<"---------------------------------"<<std::endl;
+    std::cout<<"Games Played: " << player.numberOfGames << std::endl;
+    std::cout<<"Running Score: " << player.totalScore << std::endl;
+    std::cout<<"Average Score: " << player.averageScore << std::endl;
+    std::cout<<"---------------------------------"<<std::endl;
+}
+
+

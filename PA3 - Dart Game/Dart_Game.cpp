@@ -8,22 +8,41 @@ Description: This cpp runs the program
 
 #include "Dart_Game.h"
 
-int main(){
+int main() {
     const char filename[] = "playercards.txt";
     std::ifstream inFile;
+    PlayerCard newPlayer;
+    int numCards = 0;
+    PlayerCard* scoreCards = nullptr;
 
     if (!fileOpen(filename, inFile)) {
         std::cerr << "Failed to open file: " << filename << std::endl;
         return 1;
     }
 
-    int numCards = 0;
-    PlayerCard* scoreCards = nullptr;
-
     srand(time(nullptr));
 
     importPlayerScoreCards(inFile, &scoreCards, &numCards);
-    std::cout << scoreCards[3].playerID << std::endl;
+    clearScreen();
+    std::cout<<"Welcome to the game of darts!"<<std::endl;
+    std::cout<<"It's completely skill-based and not random luck, I promise!"<<std::endl;
+    std::cout<<"..."<<std::endl;
+    std::cout<<"*wink*"<<std::endl;
+    initializePlayerScoreCard(&newPlayer);
+    pushBackPlayerCard(&scoreCards, &numCards, newPlayer);
+
+    printPlayerScoreCard(scoreCards[sizeof(scoreCards)-1]);
+
+    while(getDartRounds(scoreCards[sizeof(scoreCards)-1]));
+    std::cout<<std::endl;
+    std::cout<<"Here's your final score card!"<<std::endl;
+    printPlayerScoreCard(scoreCards[sizeof(scoreCards)-1]);
+    std::cout<<std::endl;
+    std::cout<<"See how your score compares to previous players:"<<std::endl;
+    for(size_t i = 0; i < sizeof(scoreCards)-1; i++){
+        printPlayerScoreCard(scoreCards[i]);
+        std::cout << std::endl;
+    }
 
     delete[] scoreCards;
 

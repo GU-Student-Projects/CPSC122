@@ -26,11 +26,16 @@ struct PlayerCard {
     double averageScore;
 };
 
+const int MAXIMUM_CHARACTERS = 30;
+
 void clearScreen();
 bool fileOpen(const char* filename, std::ifstream& inFile);
 int* pushBackInteger(int* originalArray, int* arraySize, int newValue );
 void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard newPlayer);
 void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards);
+void initializePlayerScoreCard(PlayerCard* player);
+bool getDartRounds(PlayerCard& player);
+void printPlayerScoreCard(const PlayerCard& player);
 
 
 #endif
