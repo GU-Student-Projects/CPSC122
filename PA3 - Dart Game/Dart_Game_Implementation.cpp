@@ -40,7 +40,7 @@ void clearScreen(){ //function to clear terminal
     *************************************************************/
 
 bool fileOpen(const char* filename, std::ifstream& inFile) {
-    inFile.open(filename);
+    inFile.open(filename); //open file
     return inFile.is_open();
 }
 
@@ -56,74 +56,107 @@ bool fileOpen(const char* filename, std::ifstream& inFile) {
     *************************************************************/
 
 void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard newPlayer) {
-    (*arraySize)++;
-    PlayerCard* newArray = new PlayerCard[*arraySize];
+    (*arraySize)++; //increase size of the array
+    PlayerCard* newArray = new PlayerCard[*arraySize]; //create a new array with the larger size
 
     for (int i = 0; i < (*arraySize - 1); i++) {
-        newArray[i] = (*originalArray)[i];
+        newArray[i] = (*originalArray)[i]; //copy all of the content from the original array into the new array
     }
 
-    newArray[*arraySize - 1] = newPlayer;
+    newArray[*arraySize - 1] = newPlayer; //add the new value to the last element of the new vector
 
-    delete[] *originalArray;
+    delete[] *originalArray; //delete the previous array
 
-    *originalArray = newArray;
+    *originalArray = newArray; //return the new array
+
 }
 
-void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards) {
-    char lastName[MAXIMUM_CHARACTERS];
-    PlayerCard newUser;
+   /*************************************************************
+    * Function: importPlayerScoreCards()
+    * Date Created: 10/10/23
+    * Date Last Modified: 10/10/23
+    * Description: from a TXT file, each line is read and added
+    * the first and last name spots are specifically isolated and combined
+    * Returns: populated array of a custom struct.
+    * Pre: empty array
+    * Post: completed array with read data.
+    *************************************************************/
 
-    while (inFile >> newUser.playerID) {
+void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards) {
+    char lastName[MAXIMUM_CHARACTERS]; //create a variable to store the last name seperate from the first name
+    PlayerCard newUser; //create a user
+
+    while (inFile >> newUser.playerID) { //while there is content in the file
         inFile >> newUser.playerName;
         inFile >> lastName;
 
-        strncat(newUser.playerName, " ", MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1);
-        strncat(newUser.playerName, lastName, MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1);
+        strncat(newUser.playerName, " ", MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1); //add a space to the first name
+        strncat(newUser.playerName, lastName, MAXIMUM_CHARACTERS - strlen(newUser.playerName) - 1); //add the last name to the full playerName
 
-        newUser.playerName[MAXIMUM_CHARACTERS - 1] = '\0';
-        inFile >> newUser.totalScore;
+        newUser.playerName[MAXIMUM_CHARACTERS - 1] = '\0'; // add the null terminating character at the last index
+        inFile >> newUser.totalScore; //import other info
         inFile >> newUser.numberOfGames;
         inFile >> newUser.averageScore;
 
-        pushBackPlayerCard(scoreCards, numCards, newUser);
+        pushBackPlayerCard(scoreCards, numCards, newUser); //push back the player into the array
     }
 }
 
+   /*************************************************************
+    * Function: initializePlayerScoreCard()
+    * Date Created: 10/10/23
+    * Date Last Modified: 10/10/23
+    * Description: create a new user for the dart game by asking
+    * there name and populating all other information
+    * Returns: populated PlayerCard variable
+    * Pre: empty user info
+    * Post: filled user info added to the array
+    *************************************************************/
+
 void initializePlayerScoreCard(PlayerCard* player) {
-    char lastName[MAXIMUM_CHARACTERS];
+    char lastName[MAXIMUM_CHARACTERS]; //create a variable to store the last name seperate from the first name
 
-    player->playerID = std::rand() % 9000 + 1000;
+    player->playerID = std::rand() % 9000 + 1000; //randomly create an ID
     std::cout << "What is your first and last name? ";
-    std::cin >> player->playerName >> lastName;
+    std::cin >> player->playerName >> lastName; //import the first and last name into 2 variables
 
-    int availableSpace = MAXIMUM_CHARACTERS - strlen(player->playerName) - 1;
+    int availableSpace = MAXIMUM_CHARACTERS - strlen(player->playerName) - 1; //if there is room in the overall arrat
     if (availableSpace > 0) {
-        strncat(player->playerName, " ", availableSpace);
-        strncat(player->playerName, lastName, availableSpace);
+        strncat(player->playerName, " ", availableSpace); //add a space
+        strncat(player->playerName, lastName, availableSpace); //combine the lastname into the remaining spaces and cut off at 29
     }
 
-    player->playerName[MAXIMUM_CHARACTERS- 1] = '\0';
+    player->playerName[MAXIMUM_CHARACTERS- 1] = '\0'; //add the null terminating character
 
-    player->totalScore = 0;
+    player->totalScore = 0; //set all other scores to 0
     player->averageScore = 0.0;
     player->numberOfGames = 0;
 }
 
+   /*************************************************************
+    * Function: getDartRounds()
+    * Date Created: 10/10/23
+    * Date Last Modified: 10/10/23
+    * Description: play the dart game and randomly assign points
+    * Returns: finalized scores and average scores for the user
+    * Pre: initialized player variable
+    * Post: filled player variable
+    *************************************************************/
+
 bool getDartRounds(PlayerCard& player) {
-    int randomScore = (std::rand() % 3) + 1;
+    int randomScore = (std::rand() % 3) + 1; //randomly generate 1-3
     char select;
     bool validAnswer = false;
 
     std::cout << "You threw a dart!" << std::endl;
 
     if (randomScore == 2) {
-        int score = (std::rand() % 5) + 1;
+        int score = (std::rand() % 5) + 1; //if it is a 2, generate a number between 1 and 5
         std::cout << "Oof, nice try but you hit a " << score << ". You should try again!" << std::endl;
         player.totalScore += score;
     }
     else if (randomScore == 3) {
-        int score = (std::rand() % 5) + 6;
+        int score = (std::rand() % 5) + 6; //if it is a 3 generate a number between 6 and 10
         std::cout << "Nice! You hit a " << score << ". Time to move on, I think." << std::endl;
         player.totalScore += score;
     }
@@ -131,10 +164,10 @@ bool getDartRounds(PlayerCard& player) {
         std::cout << "Oh man... you missed" << std::endl;
     }
 
-    player.numberOfGames++;
+    player.numberOfGames++; //increase the total number of games
 
     std::cout << "Keep playing? (y/n): ";
-    while (!validAnswer) {
+    while (!validAnswer) { //loop until correct answer is chosen
         std::cin >> select;
 
         if (select == 'y') {
@@ -143,17 +176,27 @@ bool getDartRounds(PlayerCard& player) {
         }
         else if (select == 'n') {
             validAnswer = true;
-            player.averageScore = double(player.totalScore)/player.numberOfGames;
+            player.averageScore = double(player.totalScore)/player.numberOfGames; //calculate the average score
             return false;
         }
         else {
-            std::cout << "Please select either 'y' or 'n'" << std::endl;
+            std::cout << "Please select either 'y' or 'n'" << std::endl; //input validation
         }
     }
     return false; 
 }
 
-void printPlayerScoreCard(const PlayerCard& player){
+   /*************************************************************
+    * Function: printPlayerScoreCard()
+    * Date Created: 10/10/23
+    * Date Last Modified: 10/10/23
+    * Description: output the user data to the terminal
+    * Returns: void
+    * Pre: populated player variable
+    * Post: console output
+    *************************************************************/
+
+void printPlayerScoreCard(const PlayerCard& player){ //output the player card
     std::cout<<"-----------------------|PID:"<<player.playerID<<"|"<<std::endl;
     std::cout<<player.playerName<<"'s Score Card"<<std::endl;
     std::cout<<"---------------------------------"<<std::endl;
