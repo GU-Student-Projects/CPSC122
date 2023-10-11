@@ -4,6 +4,7 @@ Class: CPSC122, Fall 2023
 Date: October 10, 2023
 Programming Assignment: PA3
 Description: This cpp contains all of the implementations of functions
+Bonus: I did the bonus for this assignment from the beginning and rcommented out the vector implementation
 */
 
 #include "Dart_Game.h"
@@ -82,7 +83,7 @@ void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard n
     * Post: completed array with read data.
     *************************************************************/
 
-void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards) {
+void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards, std::vector<PlayerCard>& vectorScoreCard) {
     char lastName[MAXIMUM_CHARACTERS]; //create a variable to store the last name seperate from the first name
     PlayerCard newUser; //create a user
 
@@ -99,6 +100,7 @@ void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int*
         inFile >> newUser.averageScore;
 
         pushBackPlayerCard(scoreCards, numCards, newUser); //push back the player into the array
+        //vectorScoreCard.push_back(newUser);
     }
 }
 
