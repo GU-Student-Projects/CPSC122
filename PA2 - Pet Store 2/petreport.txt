@@ -1,13 +1,13 @@
 Pet Store CSV Summary Report
 ----------------------------
 
-Pet Stores: Fur Get Me Not, Pick of the Litter
-Total number of pets: 2
+Pet Stores: Fur Get Me Not, Pick of the Litter, For Pet's Sake
+Total number of pets: 7
 
 Pet store with the most pets: Fur Get Me Not
-Number of pets at Fur Get Me Not: 1
+Number of pets at Fur Get Me Not: 3
 
-Pet average days on site across all stores: 9
-Employee of the month choice: "Chris P. Bacon"
+Pet average days on site across all stores: 31
+Employee of the month choice: "Mary Puppins"
 
-Current Pet Inventory: Chris P. Bacon, Mary Puppins
+Current Pet Inventory: Barktholamew, Chris P. Bacon, Jack Meower, Jean-Clawed Van Damme, Lame Duck, Mary Puppins, Severus Snake
