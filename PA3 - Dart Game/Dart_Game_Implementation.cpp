@@ -204,7 +204,7 @@ void printPlayerScoreCard(const PlayerCard& player){ //output the player card
     std::cout<<"---------------------------------"<<std::endl;
     std::cout<<"Games Played: " << player.numberOfGames << std::endl;
     std::cout<<"Running Score: " << player.totalScore << std::endl;
-    std::cout<<"Average Score: " << player.averageScore << std::endl;
+    std::cout<< std::fixed << std::setprecision(2) <<"Average Score: " << player.averageScore << std::endl;
     std::cout<<"---------------------------------"<<std::endl;
 }
 

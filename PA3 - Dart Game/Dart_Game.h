@@ -15,6 +15,7 @@ Bonus: I did the bonus for this assignment from the beginning and rcommented out
 #include <ctime>
 #include <cstring>
 #include <vector>
+#include <iomanip>
 
 #ifdef _WIN32
 #include <windows.h>
