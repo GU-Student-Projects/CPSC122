@@ -245,11 +245,8 @@ PlayerCard::PlayerCard(std::ifstream& inFile, int idValue){
 
     PlayerCard::generatePlayerID(idValue);
     inFile >> firstName >> lastName;
+    setPlayerName(firstName, lastName);
 
-    strncat(firstName, " ", MAXIMUM_CHARACTERS - strlen(firstName) - 1); //add a space to the first name
-    strncat(firstName, lastName, MAXIMUM_CHARACTERS - strlen(firstName) - 1); //add the last name to the first name
-    firstName[MAXIMUM_CHARACTERS - 1] = '\0'; // add the null terminating character at the last index
-    strcpy(playerName, firstName);
 
     inFile >> scoreValue; //import other info
     inFile >> numberValue;
@@ -374,4 +371,21 @@ void PlayerCard::setAverageScore(double value){
 
 void PlayerCard::setNumberOfGames(int value){
     numberOfGames = value;
+}
+
+   /*************************************************************
+    * Function: setPlayerName()
+    * Date Created: 10/29/23
+    * Date Last Modified: 10/29/23
+    * Description: bring the public number of games 
+    * value into the private class
+    * Returns: void
+    * Pre: void
+    * Post: void
+    *************************************************************/
+void PlayerCard::setPlayerName( char* firstName, const char* lastName){
+    strncat(firstName, " ", MAXIMUM_CHARACTERS - strlen(firstName) - 1); //add a space to the first name
+    strncat(firstName, lastName, MAXIMUM_CHARACTERS - strlen(firstName) - 1); //add the last name to the first name
+    firstName[MAXIMUM_CHARACTERS - 1] = '\0'; // add the null terminating character at the last index
+    strcpy(playerName, firstName);
 }

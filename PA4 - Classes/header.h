@@ -42,7 +42,7 @@ class PlayerCard {
         void updateAverageScore(void);
         void setTotalScore(int);
         void setNumberOfGames(int);
-        void setPlayerName(const char*);        
+        void setPlayerName(char*, const char*);        
 
 
         PlayerCard(); //Default Constructor
