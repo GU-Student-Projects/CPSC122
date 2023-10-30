@@ -6,7 +6,7 @@ Programming Assignment: PA4
 Description: This cpp runs the program
 */
 
-#include "Dart_Game.h"
+#include "header.h"
 
 int main() {
     const char filename[] = "playercards.txt"; //char array for the file name

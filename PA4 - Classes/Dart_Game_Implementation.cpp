@@ -4,10 +4,9 @@ Class: CPSC122, Fall 2023
 Date: October 29, 2023
 Programming Assignment: PA4
 Description: This cpp contains all of the implementations of functions
-Bonus: I did the bonus for this assignment from the beginning and rcommented out the vector implementation
 */
 
-#include "Dart_Game.h"
+#include "header.h"
 
      /*************************************************************
     * Function: clearScreen ()

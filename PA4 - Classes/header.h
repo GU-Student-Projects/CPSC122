@@ -6,8 +6,8 @@ Programming Assignment: PA4
 Description: This cpp contains all of the declerations of functions
 */
 
-#ifndef DART_GAME_H_INCLUDED
-#define DART_GAME_H_INCLUDED
+#ifndef HEADER_H_INCLUDED
+#define HEADER_H_INCLUDED
 
 #include <iostream>
 #include <fstream>
