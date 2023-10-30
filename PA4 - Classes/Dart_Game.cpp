@@ -20,18 +20,18 @@ int main() {
     }
 
     srand(time(nullptr)); //seed the rand
-    //clearScreen();
+    clearScreen();
 
     std::cout<<"Welcome to the game of darts!"<<std::endl;
     std::cout<<"It's completely skill-based and not random luck, I promise!"<<std::endl;
     std::cout<<"..."<<std::endl;
     std::cout<<"*wink*"<<std::endl;
-
+    std::cout<<std::endl;
     initializePlayerScoreCard(&scoreCards, &numCards); //get the player data
     importPlayerScoreCards(inFile, &scoreCards, &numCards); //import the player cards
-
+    std::cout<<std::endl;
     printPlayerScoreCard(scoreCards[0]); //print score card
-
+    std::cout<<std::endl;
     while(getDartRounds(scoreCards[0])); //loop until game ends
     std::cout<<std::endl;
     std::cout<<"Here's your final score card!"<<std::endl;

@@ -45,6 +45,7 @@ class PlayerCard {
         PlayerCard();
         PlayerCard(std::ifstream&, int idValue);
         PlayerCard(const char*);
+        ~PlayerCard();
 
     private:
 

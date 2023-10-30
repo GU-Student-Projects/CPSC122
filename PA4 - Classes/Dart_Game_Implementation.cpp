@@ -205,14 +205,9 @@ void printPlayerScoreCard(const PlayerCard& player){ //output the player card
     * Post: void
     *************************************************************/
 
-PlayerCard::PlayerCard(){
-    strcpy(playerName, "Default");
+PlayerCard::PlayerCard() : PlayerCard("Default") {
     playerID = 0;
-    numberOfGames = 0;
-    totalScore = 0;
-    averageScore = 0.0;
 }
-
    /*************************************************************
     * Function: PlayerCard(const char* name)
     * Date Created: 10/29/23
