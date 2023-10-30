@@ -263,6 +263,19 @@ PlayerCard::PlayerCard(std::ifstream& inFile, int idValue){
     
 }
 
+   /*************************************************************
+    * Function: ~PlayerCard()
+    * Date Created: 10/29/23
+    * Date Last Modified: 10/29/23
+    * Description: Default deconstructor
+    * Returns: void
+    * Pre: void
+    * Post: void
+    *************************************************************/
+
+PlayerCard::~PlayerCard(){ 
+}
+
 
    /*************************************************************
     * Function: generatePlayerID()
