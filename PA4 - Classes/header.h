@@ -41,18 +41,19 @@ class PlayerCard {
         void generatePlayerID(int);
         void updateAverageScore(void);
         void setTotalScore(int);
+        void setNumberOfGames(int);
+        void setPlayerName(const char*);        
 
-        PlayerCard();
-        PlayerCard(std::ifstream&, int idValue);
-        PlayerCard(const char*);
+
+        PlayerCard(); //Default Constructor
+        PlayerCard(std::ifstream&, int idValue); //Constructor with passed file and PID
+        PlayerCard(const char*); //Constructor with passed name
         ~PlayerCard();
 
     private:
 
-        void setPlayerName(const char*);
-        void setPlayerID(int);
-        void setNumberOfGames(int);
         void setAverageScore(double);
+        void setPlayerID(int);
 
 };
 

@@ -206,7 +206,6 @@ void printPlayerScoreCard(const PlayerCard& player){ //output the player card
     *************************************************************/
 
 PlayerCard::PlayerCard() : PlayerCard("Default") {
-    playerID = 0;
 }
    /*************************************************************
     * Function: PlayerCard(const char* name)
@@ -241,8 +240,10 @@ PlayerCard::PlayerCard(const char* nameValue){
 PlayerCard::PlayerCard(std::ifstream& inFile, int idValue){
     char lastName[MAXIMUM_CHARACTERS]; //create a variable to store the last name seperate from the first name
     char firstName [MAXIMUM_CHARACTERS];
+    int scoreValue, numberValue;
+    double averageValue;
 
-    playerID = idValue;
+    PlayerCard::generatePlayerID(idValue);
     inFile >> firstName >> lastName;
 
     strncat(firstName, " ", MAXIMUM_CHARACTERS - strlen(firstName) - 1); //add a space to the first name
@@ -250,11 +251,14 @@ PlayerCard::PlayerCard(std::ifstream& inFile, int idValue){
     firstName[MAXIMUM_CHARACTERS - 1] = '\0'; // add the null terminating character at the last index
     strcpy(playerName, firstName);
 
-    inFile >> totalScore; //import other info
-    inFile >> numberOfGames;
-    inFile >> averageScore;
+    inFile >> scoreValue; //import other info
+    inFile >> numberValue;
+    inFile >> averageValue;
 
-    
+    setTotalScore(scoreValue); //Explicitly use a setter to set each value in the class
+    setNumberOfGames(numberValue);
+    setAverageScore(averageValue);
+
 }
 
    /*************************************************************
@@ -355,4 +359,19 @@ void PlayerCard::setPlayerID(int value){
 
 void PlayerCard::setAverageScore(double value){
     averageScore = value;
+}
+
+   /*************************************************************
+    * Function: setNumberOfGames()
+    * Date Created: 10/29/23
+    * Date Last Modified: 10/29/23
+    * Description: bring the public number of games 
+    * value into the private class
+    * Returns: void
+    * Pre: void
+    * Post: void
+    *************************************************************/
+
+void PlayerCard::setNumberOfGames(int value){
+    numberOfGames = value;
 }
