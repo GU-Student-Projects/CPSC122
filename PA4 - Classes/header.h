@@ -14,6 +14,7 @@ Description: This cpp contains all of the declerations of functions
 #include <ctime>
 #include <cstring>
 #include <iomanip>
+#include <vector>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -59,10 +60,9 @@ class PlayerCard {
 
 bool getDartRounds(PlayerCard& player);
 void printPlayerScoreCard(const PlayerCard& player);
-void initializePlayerScoreCard(PlayerCard** scoreCards, int* numCards);
-void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards);
+void initializePlayerScoreCard(std::vector<PlayerCard> &scoreCards);
+void importPlayerScoreCards(std::ifstream& inFile, std::vector<PlayerCard> &scoreCards);
 bool fileOpen(const char* filename, std::ifstream& inFile);
-void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard newPlayer);
 void clearScreen();
     
 

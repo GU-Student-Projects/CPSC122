@@ -44,32 +44,6 @@ bool fileOpen(const char* filename, std::ifstream& inFile) {
     return inFile.is_open();
 }
 
-   /*************************************************************
-    * Function: pushBackPlayerCard()
-    * Date Created: 10/10/23
-    * Date Last Modified: 10/10/23
-    * Description: adjusts the dynamically assigned array for an
-    * increase in size and adds the new value
-    * Returns: increased array size with push back characters
-    * Pre: original array exists, and the new value is present
-    * Post: completed array
-    *************************************************************/
-
-void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard newPlayer) {
-    (*arraySize)++; //increase size of the array
-    PlayerCard* newArray = new PlayerCard[*arraySize]; //create a new array with the larger size
-
-    for (int i = 0; i < (*arraySize - 1); i++) {
-        newArray[i] = (*originalArray)[i]; //copy all of the content from the original array into the new array
-    }
-
-    newArray[*arraySize - 1] = newPlayer; //add the new value to the last element of the new vector
-
-    delete[] *originalArray; //delete the previous array
-
-    *originalArray = newArray; //return the new array
-
-}
 
    /*************************************************************
     * Function: importPlayerScoreCards()
@@ -82,12 +56,12 @@ void pushBackPlayerCard(PlayerCard** originalArray, int* arraySize, PlayerCard n
     * Post: completed array with read data.
     *************************************************************/
 
-void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int* numCards) {
+void importPlayerScoreCards(std::ifstream& inFile, std::vector<PlayerCard> &scoreCards) {
     int idValue;
 
     while (inFile >> idValue) { //while there is content in the file
         PlayerCard newUser(inFile, idValue); //create a user
-        pushBackPlayerCard(scoreCards, numCards, newUser); //push back the player into the array
+        scoreCards.push_back(newUser); //push back the player into the array
     }
 }
 
@@ -102,7 +76,7 @@ void importPlayerScoreCards(std::ifstream& inFile, PlayerCard** scoreCards, int*
     * Post: filled user info added to the array
     *************************************************************/
 
-void initializePlayerScoreCard(PlayerCard** scoreCards, int* numCards) {
+void initializePlayerScoreCard(std::vector<PlayerCard> &scoreCards) {
     char lastName[MAXIMUM_CHARACTERS]; //create a variable to store the last name seperate from the first name
     char firstName [MAXIMUM_CHARACTERS];    
 
@@ -119,7 +93,7 @@ void initializePlayerScoreCard(PlayerCard** scoreCards, int* numCards) {
 
     PlayerCard player(firstName); //use a constructor to to generate a blank scorecard with specified name
 
-    pushBackPlayerCard(scoreCards, numCards, player);
+    scoreCards.push_back(player);
 
 }
 
