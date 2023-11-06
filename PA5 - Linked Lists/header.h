@@ -4,6 +4,7 @@ Class: CPSC122, Fall 2023
 Date: November 5, 2023
 Programming Assignment: PA5
 Description: This headerfile lists all of the function descriptions
+I AM ATTEMPTING THE BONUS CHALLENGE
 */
 
 #ifndef HEADER_H

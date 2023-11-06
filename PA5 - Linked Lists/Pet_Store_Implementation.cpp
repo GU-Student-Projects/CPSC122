@@ -4,6 +4,7 @@ Class: CPSC122, Fall 2023
 Date: November 5, 2023
 Programming Assignment: PA5
 Description: This cpp contains all of the definitions of functions
+I AM ATTEMPTING THE BONUS CHALLENGE
 */
 
 #include "header.h"
@@ -149,7 +150,7 @@ void getHeaderLine(std::ifstream& inFile, std::vector<std::string>& headers){
     /*************************************************************
     * Function: processData ()
     * Date Created: 9/2/23
-    * Date Last Modified: 9/17/23
+    * Date Last Modified: 11/5/23
     * Description: This function process the vectors and outputs
     * the result to the terminal
     * Input parameters: header row and column vectors
@@ -175,12 +176,47 @@ bool processData(const std::string filename, std::ifstream& inFile, PetStoreList
     }
 }
 
+    /*************************************************************
+    * Function: PetStoreList ()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Default constructor to initialize the linked list
+    * Input parameters: void
+    * Returns: nullptr
+    *************************************************************/
+
 PetStoreList::PetStoreList(){
     headPtr = nullptr;
 };
 
+    /*************************************************************
+    * Function: ~PetStoreList ()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Default deconstructor to deinitialize the linked list
+    * Input parameters: void
+    * Returns: nullptr
+    *************************************************************/
+
 PetStoreList::~PetStoreList(){
+    PetStoreData* nodePtr = headPtr;
+    PetStoreData* helperNode = nullptr;
+
+    while (nodePtr != nullptr){
+        helperNode = nodePtr->nextStore;
+        delete nodePtr;
+        nodePtr = helperNode;
+    }
 };
+
+    /*************************************************************
+    * Function: createNode()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: creates a node for a linked list
+    * Input parameters: store name
+    * Returns: PetStoreNode pointer
+    *************************************************************/
 
 PetStoreList::PetStoreData* PetStoreList::createNode(std::string storeName){
     PetStoreData* newPetStoreNode = new PetStoreData;
@@ -189,6 +225,15 @@ PetStoreList::PetStoreData* PetStoreList::createNode(std::string storeName){
 
     return newPetStoreNode;
 }
+
+    /*************************************************************
+    * Function: insertAtEnd()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Adds a node to the end of a linked list
+    * Input parameters: Node pointer
+    * Returns: void
+    *************************************************************/
 
 void PetStoreList::insertAtEnd(PetStoreData* newStoredata){
     if (headPtr == nullptr) {
@@ -203,6 +248,38 @@ void PetStoreList::insertAtEnd(PetStoreData* newStoredata){
      }
 }
 
+    /*************************************************************
+    * Function: storeInList()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Given store name, verify name exists in list
+    * Input parameters: Store name
+    * Returns: bool
+    *************************************************************/
+
+bool PetStoreList::storeInList(std::string name) {
+    PetStoreData* helperPtr = headPtr;
+    
+    while (helperPtr != nullptr) {
+        if (helperPtr->petStoreName == name) {
+            return true;
+        }
+        helperPtr = helperPtr->nextStore;
+    }
+    
+    return false;
+}
+
+
+    /*************************************************************
+    * Function: addPetData()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Given pet data and store information, add to node
+    * Input parameters: Store name and Store Data
+    * Returns: void
+    *************************************************************/
+
 void PetStoreList::addPetData(std::string storeName, std::string pName, std::string pType, int numDays) {
     PetStoreData* helperNodePtr = headPtr;
     PetData newPetData;
@@ -215,7 +292,7 @@ void PetStoreList::addPetData(std::string storeName, std::string pName, std::str
                 newPetData.petName = pName;
                 newPetData.petType = pType;
                 newPetData.numDaysAtStore = numDays;
-                helperNodePtr->petData.push_back(newPetData);
+                helperNodePtr->petData.push_back(newPetData); //Push back everything to PetData vector
                 return;
             }
             helperNodePtr = helperNodePtr->nextStore;
@@ -228,6 +305,69 @@ void PetStoreList::addPetData(std::string storeName, std::string pName, std::str
     }
 }
 
+    /*************************************************************
+    * Function: calculatePetSummary()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: fill programer defined struct
+    * with calculated information
+    * Input parameters: void
+    * Returns: void
+    *************************************************************/
+
+void PetStoreList::calculatePetSummary(){
+    PetStoreData* helperPtr = headPtr;
+    int tempVariable = 0;
+    summaryData.numPets = 0;
+    summaryData.minDaysAtStore = helperPtr->petData[0].numDaysAtStore;
+    summaryData.maxDaysAtStore = 0;
+
+    while (helperPtr != nullptr){
+        for (size_t i = 0; i < helperPtr->petData.size(); i++) {
+            tempVariable += helperPtr->petData[i].numDaysAtStore;
+            if (helperPtr->petData[i].numDaysAtStore < summaryData.minDaysAtStore){
+                summaryData.minDaysAtStore = helperPtr->petData[i].numDaysAtStore;
+            }
+            if (helperPtr->petData[i].numDaysAtStore > summaryData.maxDaysAtStore){
+            summaryData.maxDaysAtStore = helperPtr->petData[i].numDaysAtStore;
+            }
+        }
+        summaryData.numPets += helperPtr->petData.size();
+        helperPtr = helperPtr->nextStore;
+    }
+
+    if (summaryData.numPets != 0) {
+        summaryData.averageDaysAtStore = tempVariable / summaryData.numPets;
+    } else {
+        summaryData.averageDaysAtStore = 0;
+    }
+}
+
+    /*************************************************************
+    * Function: displayPetList()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Visualize PetStore information in console
+    * Input parameters: void
+    * Returns: void
+    *************************************************************/
+
+void PetStoreList::displayPetSummary() const{
+    std::cout<< "__________________________________" <<std::endl;
+    std::cout<< "Total number of pets: "<< summaryData.numPets <<std::endl;
+    std::cout<< "Average number of days at pet store: "<< summaryData.averageDaysAtStore <<std::endl;
+    std::cout<< "Shortest stay at pet store: "<< summaryData.minDaysAtStore <<std::endl;
+    std::cout<< "Longest stay at pet store: "<< summaryData.maxDaysAtStore <<std::endl;
+}
+
+    /*************************************************************
+    * Function: displayPetList()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Visualize PetStore information in console
+    * Input parameters: void
+    * Returns: void
+    *************************************************************/
 
 void PetStoreList::displayPetList() const {
     PetStoreData* storePtr = headPtr;
@@ -251,81 +391,14 @@ void PetStoreList::displayPetList() const {
 
 }
 
-bool PetStoreList::storeInList(std::string name) {
-    PetStoreData* helperPtr = headPtr;
-    
-    while (helperPtr != nullptr) {
-        if (helperPtr->petStoreName == name) {
-            return true;
-        }
-        helperPtr = helperPtr->nextStore;
-    }
-    
-    return false;
-}
-
-void PetStoreList::calculatePetSummary(){
-    PetStoreData* helperPtr = headPtr;
-    summaryData.numPets = 0;
-    int tempVariable = 0;
-
-    while (helperPtr != nullptr){
-        summaryData.numPets += helperPtr->petData.size();
-        helperPtr = helperPtr->nextStore;
-    }
-
-    helperPtr = headPtr;
-    tempVariable = 0;
-
-    while (helperPtr != nullptr) {
-        for (size_t i = 0; i < helperPtr->petData.size(); i++) {
-            tempVariable += helperPtr->petData[i].numDaysAtStore;
-        }
-        helperPtr = helperPtr->nextStore;
-    }
-
-    if (summaryData.numPets != 0) {
-        summaryData.averageDaysAtStore = tempVariable / summaryData.numPets;
-    } else {
-        summaryData.averageDaysAtStore = 0;
-    }
-
-    helperPtr = headPtr;
-    tempVariable = helperPtr->petData[0].numDaysAtStore;
-    
-
-    while (helperPtr != nullptr){
-        for(size_t i = 0; i < helperPtr->petData.size(); i++){
-            if (helperPtr->petData[i].numDaysAtStore < tempVariable)
-            tempVariable = helperPtr->petData[i].numDaysAtStore;
-        }
-        helperPtr = helperPtr->nextStore;
-    }
-
-    summaryData.minDaysAtStore = tempVariable;
-
-    helperPtr = headPtr;
-    tempVariable = 0;
-
-    while (helperPtr != nullptr){
-        for(size_t i = 0; i < helperPtr->petData.size(); i++){
-            if (helperPtr->petData[i].numDaysAtStore > tempVariable)
-            tempVariable = helperPtr->petData[i].numDaysAtStore;
-        }
-        helperPtr = helperPtr->nextStore;
-    }
-
-    summaryData.maxDaysAtStore = tempVariable;
-
-}
-
-void PetStoreList::displayPetSummary() const{
-    std::cout<< "__________________________________" <<std::endl;
-    std::cout<< "Total number of pets: "<< summaryData.numPets <<std::endl;
-    std::cout<< "Average number of days at pet store: "<< summaryData.averageDaysAtStore <<std::endl;
-    std::cout<< "Shortest stay at pet store: "<< summaryData.minDaysAtStore <<std::endl;
-    std::cout<< "Longest stay at pet store: "<< summaryData.maxDaysAtStore <<std::endl;
-}
+    /*************************************************************
+    * Function: writePetSummary()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Visualize PetStore information in txt
+    * Input parameters: ofstream
+    * Returns: void
+    *************************************************************/
 
 void PetStoreList::writePetSummary(std::ofstream& outfile){
     outfile<< "Pet Store CSV Summary Report" <<std::endl;
@@ -335,6 +408,15 @@ void PetStoreList::writePetSummary(std::ofstream& outfile){
     outfile<< "Shortest stay at pet store: "<< summaryData.minDaysAtStore <<std::endl;
     outfile<< "Longest stay at pet store: "<< summaryData.maxDaysAtStore <<std::endl;
 }
+
+    /*************************************************************
+    * Function: writePetList()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: Visualize PetStore information in txt
+    * Input parameters: ofstream
+    * Returns: void
+    *************************************************************/
 
 void PetStoreList::writePetList(std::ofstream& outfile){
     PetStoreData* storePtr = headPtr;
@@ -356,4 +438,90 @@ void PetStoreList::writePetList(std::ofstream& outfile){
         storePtr = storePtr->nextStore;
     }
 
+}
+
+    /*************************************************************
+    * Function: insertAtFront()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: inserts node as the head pointer/Front
+    * Input parameters: newStoreData ptr
+    * Returns: void
+    *************************************************************/
+
+void PetStoreList::insertAtFront(PetStoreData* newStoredata) {
+    newStoredata->nextStore = headPtr;
+    headPtr = newStoredata;
+}
+
+    /*************************************************************
+    * Function: insertAtPosition()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: inserts node any position
+    * Input parameters: newStoreData ptr and input position
+    * Returns: T/F
+    *************************************************************/
+
+bool PetStoreList::insertAtPosition(PetStoreData* newStoredata, int position) {
+    PetStoreData* helperPtr = headPtr;
+    int i = 0;
+    position -= 1;
+
+    if (position < 0) {
+        return false;
+    }
+    if (position == 0 || headPtr == nullptr) {
+        insertAtFront(newStoredata);
+        return true;
+    }
+    while (helperPtr->nextStore != nullptr && i < position - 1) {
+        helperPtr = helperPtr->nextStore;
+        i++;
+    }
+    if (i == position - 1) {
+        newStoredata->nextStore = helperPtr->nextStore;
+        helperPtr->nextStore = newStoredata;
+        return true;
+    }
+
+    return false;
+}
+
+
+
+     /*************************************************************
+    * Function: deleteStore()
+    * Date Created: 11/5/23
+    * Date Last Modified: 11/5/23
+    * Description: deletes node by Name
+    * Input parameters: store name
+    * Returns: T/F
+    *************************************************************/
+
+bool PetStoreList::deleteStore(std::string nameOfStoreToRemove) {
+    PetStoreData* tempPtr = headPtr;
+    PetStoreData* previousPtr = headPtr;
+    PetStoreData* currentPtr = headPtr->nextStore;
+    
+    if (!storeInList(nameOfStoreToRemove)) {
+        return false;    }
+
+    if (headPtr != nullptr && headPtr->petStoreName == nameOfStoreToRemove) {
+        headPtr = headPtr->nextStore;
+        delete tempPtr;
+        return true;
+    }
+
+    while (currentPtr != nullptr) {
+        if (currentPtr->petStoreName == nameOfStoreToRemove) {
+            previousPtr->nextStore = currentPtr->nextStore;
+            delete currentPtr;
+            return true;
+        }
+        previousPtr = currentPtr;
+        currentPtr = currentPtr->nextStore;
+    }
+
+    return false;
 }

@@ -47,3 +47,81 @@ Pet Store Name: For Pet's Sake
 > Pet Type: duck
 > Number of days at store: 5
 ----------------------------
+
+
+*******BONUS TASK******
+Pet Store CSV Summary Report
+__________________________________
+Total number of pets: 11
+Average number of days at pet store: 23
+Shortest stay at pet store: 1
+Longest stay at pet store: 101
+__________________________________
+Pet Store Name: Pet Palace
+**********************************
+| Number of pets: 2
+| Pet Information: 
+> Pet 1 Name: Molle
+> Pet Type: Cat
+> Number of days at store: 12
+----------------------------
+> Pet 2 Name: Madde
+> Pet Type: Dog
+> Number of days at store: 15
+----------------------------
+__________________________________
+Pet Store Name: Fur Get Me Not
+**********************************
+| Number of pets: 3
+| Pet Information: 
+> Pet 1 Name: Chris P. Bacon
+> Pet Type: pig
+> Number of days at store: 1
+----------------------------
+> Pet 2 Name: Jack Meower
+> Pet Type: cat
+> Number of days at store: 24
+----------------------------
+> Pet 3 Name: Severus Snake
+> Pet Type: snake
+> Number of days at store: 12
+----------------------------
+__________________________________
+Pet Store Name: Prince of Pets
+**********************************
+| Number of pets: 2
+| Pet Information: 
+> Pet 1 Name: Maize
+> Pet Type: Turtle
+> Number of days at store: 3
+----------------------------
+> Pet 2 Name: Mavus
+> Pet Type: Rabbit
+> Number of days at store: 7
+----------------------------
+__________________________________
+Pet Store Name: Pick of the Litter
+**********************************
+| Number of pets: 2
+| Pet Information: 
+> Pet 1 Name: Mary Puppins
+> Pet Type: dog
+> Number of days at store: 17
+----------------------------
+> Pet 2 Name: Barktholamew
+> Pet Type: dog
+> Number of days at store: 101
+----------------------------
+__________________________________
+Pet Store Name: For Pet's Sake
+**********************************
+| Number of pets: 2
+| Pet Information: 
+> Pet 1 Name: Jean-Clawed Van Damme
+> Pet Type: cat
+> Number of days at store: 60
+----------------------------
+> Pet 2 Name: Lame Duck
+> Pet Type: duck
+> Number of days at store: 5
+----------------------------
