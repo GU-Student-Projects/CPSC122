@@ -1,0 +1,6 @@
+all: Pet_Store
+
+Pet_Store: Pet_Store.cpp Pet_Store_Implementation.cpp header.h
+	@g++ -g -Wall -std=c++11 Pet_Store.cpp Pet_Store_Implementation.cpp -o outputExecutable
+	@./outputExecutable
+	@rm ./outputExecutable
