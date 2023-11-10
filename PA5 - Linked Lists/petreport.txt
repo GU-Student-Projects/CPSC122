@@ -49,12 +49,15 @@ Pet Store Name: For Pet's Sake
 ----------------------------
 
 
-*******BONUS TASK******
+**********************
+*      BONUS TASK    *
+**********************
+
 Pet Store CSV Summary Report
 __________________________________
-Total number of pets: 11
-Average number of days at pet store: 23
-Shortest stay at pet store: 1
+Total number of pets: 8
+Average number of days at pet store: 27
+Shortest stay at pet store: 3
 Longest stay at pet store: 101
 __________________________________
 Pet Store Name: Pet Palace
@@ -70,21 +73,17 @@ Pet Store Name: Pet Palace
 > Number of days at store: 15
 ----------------------------
 __________________________________
-Pet Store Name: Fur Get Me Not
+Pet Store Name: Pick of the Litter
 **********************************
-| Number of pets: 3
+| Number of pets: 2
 | Pet Information: 
-> Pet 1 Name: Chris P. Bacon
-> Pet Type: pig
-> Number of days at store: 1
+> Pet 1 Name: Mary Puppins
+> Pet Type: dog
+> Number of days at store: 17
 ----------------------------
-> Pet 2 Name: Jack Meower
-> Pet Type: cat
-> Number of days at store: 24
-----------------------------
-> Pet 3 Name: Severus Snake
-> Pet Type: snake
-> Number of days at store: 12
+> Pet 2 Name: Barktholamew
+> Pet Type: dog
+> Number of days at store: 101
 ----------------------------
 __________________________________
 Pet Store Name: Prince of Pets
@@ -98,19 +97,6 @@ Pet Store Name: Prince of Pets
 > Pet 2 Name: Mavus
 > Pet Type: Rabbit
 > Number of days at store: 7
-----------------------------
-__________________________________
-Pet Store Name: Pick of the Litter
-**********************************
-| Number of pets: 2
-| Pet Information: 
-> Pet 1 Name: Mary Puppins
-> Pet Type: dog
-> Number of days at store: 17
-----------------------------
-> Pet 2 Name: Barktholamew
-> Pet Type: dog
-> Number of days at store: 101
 ----------------------------
 __________________________________
 Pet Store Name: For Pet's Sake

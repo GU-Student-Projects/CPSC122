@@ -13,6 +13,7 @@ int main(){
     PetStoreList storeList;
     std::string infilename = "petstoredata.csv";
     std::string outfilename = "petreport.txt";
+    std::string text;
     std::ifstream inFile;
     std::ofstream outFile;
 
@@ -36,6 +37,7 @@ int main(){
     storeList.writePetList(outFile);
 
         /* BONUS Additions*/
+    storeList.deleteStore("Fur Get Me Not");  
     storeList.insertAtFront(storeList.createNode("Pet Palace"));
     storeList.insertAtPosition(storeList.createNode("Prince of Pets"), 3);
 
@@ -46,10 +48,14 @@ int main(){
     storeList.addPetData("Prince of Pets","Mavus","Rabbit",7);
 
     storeList.calculatePetSummary();
-    std::cout<<std::endl<<std::endl<<"*******BONUS TASK******"<<std::endl;
+    text =  "**********************\n";
+    text += "*      BONUS TASK    *\n";
+    text += "**********************\n";
+    
+    std::cout<<std::endl<<std::endl<<text<<std::endl;
     storeList.displayPetSummary();
     storeList.displayPetList();
-    outFile<<std::endl<<std::endl<<"*******BONUS TASK******"<<std::endl;
+    outFile<<std::endl<<std::endl<<text<<std::endl;
     storeList.writePetSummary(outFile);
     storeList.writePetList(outFile);
     /*BONUS end of bonus*/
