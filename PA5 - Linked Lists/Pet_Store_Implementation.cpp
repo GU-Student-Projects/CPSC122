@@ -113,7 +113,7 @@ void getDataFromCSV(std::ifstream& inFile, PetStoreList& storeList) {
             break; // Exit the loop if an empty line is encountered
         }
 
-        std::getline(dataToParse, storeName, ',');
+        std::getline(dataToParse, storeName, ','); //add input from CSV to each variable
         std::getline(dataToParse, pName, ',');
         std::getline(dataToParse, pType, ',');
         dataToParse >> numDays;
@@ -186,7 +186,7 @@ bool processData(const std::string filename, std::ifstream& inFile, PetStoreList
     *************************************************************/
 
 PetStoreList::PetStoreList(){
-    headPtr = nullptr;
+    headPtr = nullptr; //initiate with null pointer
 };
 
     /*************************************************************
@@ -202,7 +202,7 @@ PetStoreList::~PetStoreList(){
     PetStoreData* nodePtr = headPtr;
     PetStoreData* helperNode = nullptr;
 
-    while (nodePtr != nullptr){
+    while (nodePtr != nullptr){ // Go through and delete each node
         helperNode = nodePtr->nextStore;
         delete nodePtr;
         nodePtr = helperNode;
@@ -220,8 +220,8 @@ PetStoreList::~PetStoreList(){
 
 PetStoreList::PetStoreData* PetStoreList::createNode(std::string storeName){
     PetStoreData* newPetStoreNode = new PetStoreData;
-    newPetStoreNode->petStoreName = storeName;
-    newPetStoreNode->nextStore = nullptr;
+    newPetStoreNode->petStoreName = storeName; //create a new node from the storeName
+    newPetStoreNode->nextStore = nullptr; //Initialize the nullptr
 
     return newPetStoreNode;
 }
@@ -237,11 +237,11 @@ PetStoreList::PetStoreData* PetStoreList::createNode(std::string storeName){
 
 void PetStoreList::insertAtEnd(PetStoreData* newStoredata){
     if (headPtr == nullptr) {
-            headPtr = newStoredata;
+            headPtr = newStoredata; //if there are no nodes, make it the head
     } else {
         PetStoreData* helperNodePtr = headPtr;
         while (helperNodePtr->nextStore != nullptr) {
-            helperNodePtr = helperNodePtr->nextStore;
+            helperNodePtr = helperNodePtr->nextStore; //go through the list until at the end and insert the new node.
         }
         newStoredata->nextStore = nullptr;
         helperNodePtr->nextStore = newStoredata;
@@ -261,7 +261,7 @@ bool PetStoreList::storeInList(std::string name) {
     PetStoreData* helperPtr = headPtr;
     
     while (helperPtr != nullptr) {
-        if (helperPtr->petStoreName == name) {
+        if (helperPtr->petStoreName == name) { //Go through the nodes comparing the string petStoreName
             return true;
         }
         helperPtr = helperPtr->nextStore;
@@ -298,7 +298,7 @@ void PetStoreList::addPetData(std::string storeName, std::string pName, std::str
             helperNodePtr = helperNodePtr->nextStore;
         }
     } else {
-        // If the store doesn't exist, create it and then add the pet data
+        // If the store doesnt exist, create it and then add the pet data
         newStore = createNode(storeName);
         insertAtEnd(newStore);
         addPetData(storeName, pName, pType, numDays); // Recursively call with the newly created store
@@ -317,29 +317,29 @@ void PetStoreList::addPetData(std::string storeName, std::string pName, std::str
 
 void PetStoreList::calculatePetSummary(){
     PetStoreData* helperPtr = headPtr;
-    int tempVariable = 0;
-    summaryData.numPets = 0;
-    summaryData.minDaysAtStore = helperPtr->petData[0].numDaysAtStore;
-    summaryData.maxDaysAtStore = 0;
+    int tempVariable = 0; //initial value
+    summaryData.numPets = 0; //initial value
+    summaryData.minDaysAtStore = helperPtr->petData[0].numDaysAtStore; //initial value
+    summaryData.maxDaysAtStore = 0; //initial value
 
-    while (helperPtr != nullptr){
+    while (helperPtr != nullptr){ //go through the list
         for (size_t i = 0; i < helperPtr->petData.size(); i++) {
             tempVariable += helperPtr->petData[i].numDaysAtStore;
             if (helperPtr->petData[i].numDaysAtStore < summaryData.minDaysAtStore){
-                summaryData.minDaysAtStore = helperPtr->petData[i].numDaysAtStore;
+                summaryData.minDaysAtStore = helperPtr->petData[i].numDaysAtStore; //find the minimum days
             }
             if (helperPtr->petData[i].numDaysAtStore > summaryData.maxDaysAtStore){
-            summaryData.maxDaysAtStore = helperPtr->petData[i].numDaysAtStore;
+            summaryData.maxDaysAtStore = helperPtr->petData[i].numDaysAtStore; //find the maximum days
             }
         }
-        summaryData.numPets += helperPtr->petData.size();
+        summaryData.numPets += helperPtr->petData.size(); //calculate and combine the size of each node
         helperPtr = helperPtr->nextStore;
     }
 
     if (summaryData.numPets != 0) {
-        summaryData.averageDaysAtStore = tempVariable / summaryData.numPets;
+        summaryData.averageDaysAtStore = tempVariable / summaryData.numPets; //calculate average
     } else {
-        summaryData.averageDaysAtStore = 0;
+        summaryData.averageDaysAtStore = 0; //if none, set 0
     }
 }
 
@@ -450,8 +450,8 @@ void PetStoreList::writePetList(std::ofstream& outfile){
     *************************************************************/
 
 void PetStoreList::insertAtFront(PetStoreData* newStoredata) {
-    newStoredata->nextStore = headPtr;
-    headPtr = newStoredata;
+    newStoredata->nextStore = headPtr; //append the original head
+    headPtr = newStoredata; //Make new node head pointer
 }
 
     /*************************************************************
@@ -469,19 +469,19 @@ bool PetStoreList::insertAtPosition(PetStoreData* newStoredata, int position) {
     position -= 1;
 
     if (position < 0) {
-        return false;
+        return false; //if less than 0 do nothing
     }
     if (position == 0 || headPtr == nullptr) {
-        insertAtFront(newStoredata);
+        insertAtFront(newStoredata); //if position = 0 insert at front
         return true;
     }
     while (helperPtr->nextStore != nullptr && i < position - 1) {
-        helperPtr = helperPtr->nextStore;
+        helperPtr = helperPtr->nextStore;  //loop through the list till the position is found
         i++;
     }
     if (i == position - 1) {
         newStoredata->nextStore = helperPtr->nextStore;
-        helperPtr->nextStore = newStoredata;
+        helperPtr->nextStore = newStoredata; //insert at location
         return true;
     }
 
@@ -500,26 +500,26 @@ bool PetStoreList::insertAtPosition(PetStoreData* newStoredata, int position) {
     *************************************************************/
 
 bool PetStoreList::deleteStore(std::string nameOfStoreToRemove) {
-    PetStoreData* tempPtr = headPtr;
-    PetStoreData* previousPtr = headPtr;
-    PetStoreData* currentPtr = headPtr->nextStore;
+    PetStoreData* tempPtr = headPtr; //temp node pointer
+    PetStoreData* previousPtr = headPtr; //previous node pointer
+    PetStoreData* currentPtr = headPtr->nextStore; //next node pointer
     
     if (!storeInList(nameOfStoreToRemove)) {
-        return false;    }
+        return false;    } //if store doesnt exist do nothing
 
     if (headPtr != nullptr && headPtr->petStoreName == nameOfStoreToRemove) {
         headPtr = headPtr->nextStore;
-        delete tempPtr;
+        delete tempPtr; //remove initial store and set new head pointer
         return true;
     }
 
     while (currentPtr != nullptr) {
-        if (currentPtr->petStoreName == nameOfStoreToRemove) {
-            previousPtr->nextStore = currentPtr->nextStore;
-            delete currentPtr;
+        if (currentPtr->petStoreName == nameOfStoreToRemove) { //find the store
+            previousPtr->nextStore = currentPtr->nextStore; //create alternate path for the node pointers
+            delete currentPtr; //delete the node
             return true;
         }
-        previousPtr = currentPtr;
+        previousPtr = currentPtr; //append the list to exclude the deleted node
         currentPtr = currentPtr->nextStore;
     }
 

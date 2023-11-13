@@ -37,11 +37,11 @@ int main(){
     storeList.writePetList(outFile);
 
         /* BONUS Additions*/
-    storeList.deleteStore("Fur Get Me Not");  
-    storeList.insertAtFront(storeList.createNode("Pet Palace"));
-    storeList.insertAtPosition(storeList.createNode("Prince of Pets"), 3);
+    storeList.deleteStore("Fur Get Me Not"); //delete a store 
+    storeList.insertAtFront(storeList.createNode("Pet Palace")); //insert a store at front
+    storeList.insertAtPosition(storeList.createNode("Prince of Pets"), 3); //insert store at location 3 (index 2)
 
-    storeList.addPetData("Pet Palace","Molle","Cat",12);
+    storeList.addPetData("Pet Palace","Molle","Cat",12); //add data to the stores
     storeList.addPetData("Pet Palace","Madde","Dog",15);
 
     storeList.addPetData("Prince of Pets","Maize","Turtle",3);
