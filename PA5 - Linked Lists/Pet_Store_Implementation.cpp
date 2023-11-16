@@ -299,8 +299,7 @@ void PetStoreList::addPetData(std::string storeName, std::string pName, std::str
         }
     } else {
         // If the store doesnt exist, create it and then add the pet data
-        newStore = createNode(storeName);
-        insertAtEnd(newStore);
+        insertAtEnd(createNode(storeName));
         addPetData(storeName, pName, pType, numDays); // Recursively call with the newly created store
     }
 }
