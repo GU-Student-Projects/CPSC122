@@ -598,7 +598,10 @@ void fullGameMode() {
 
 void onderonStreets(Player* player){
     int choice;
+    bool invalidInput;
     do {
+        invalidInput = false;
+        clearInputBuffer();
         std::cout << "\nYou stand in the streets of Onderon. Choose your next move:\n";
         std::cout << "1. Enter the Cantina\n";
         std::cout << "2. Head to the Space Port\n";
@@ -623,9 +626,10 @@ void onderonStreets(Player* player){
                 return;
             default:
                 std::cout << "Invalid choice. Try again.\n";
+                invalidInput = true;
         }
 
-    } while (choice != 4);
+    } while (choice != 4 || invalidInput);
 }
 
 void cantina(Player* player) {
@@ -633,104 +637,91 @@ void cantina(Player* player) {
     mando.initializePlayer("Boba Fett");
     std::cout << std::endl;
     int choice;
+    bool invalidInput;
 
     warGamesText("You enter the bustling cantina. Alien creatures and smugglers fill the room.", 50);
-    warGamesText("You spot a group of shady-looking individuals in the corner.",50);
+    warGamesText("You spot a group of shady-looking individuals in the corner.", 50);
     std::cout << "1. Approach the group\n";
     std::cout << "2. Find a quiet corner to observe\n";
     std::cout << "3. Leave the cantina\n";
 
     do {
-    std::cout << "Enter your choice: ";
-    std::cin >> choice;
-    switch (choice) {
-        case 1:
-            if (player->getAlignment() == mando.getAlignment()){
-                warGamesText("Boba Fett: You've got a lot of nerve coming here after the last job we did back on Corelia. Time to pay up.",50);
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-                player->loopRound((*player),mando,1);
-                if (player->getHealth() <= 0) {
-                    warGamesText("\nBoba Fett: you put up one hell of a fight, consider our little debt paid. Now get out of here!",50);
-                    pauseProgram();
-                    onderonStreets(player);
+        invalidInput = false;
+        clearInputBuffer();
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                if (player->getAlignment() == mando.getAlignment()) {
+                    warGamesText("Boba Fett: You've got a lot of nerve coming here after the last job we did back on Corelia. Time to pay up.", 50);
                 } else {
-                    warGamesText("\nBoba Fett: Watch your back, I'll be back for you.",50);
+                    warGamesText("Boba Fett: Your kind isn't allowed in here. And lucky for us... we can't let you leave either.", 50);
+                }
+
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                player->loopRound((*player), mando, 1);
+
+                if (player->getHealth() <= 0) {
+                    warGamesText("MISSION FAILED", 50);
+                    player->printPlayerInfo();
+                    warGamesText("RESTARTING MISSION...", 50);
                     pauseProgram();
                     clearScreen();
-                    warGamesText("MISSION SUCCESS",50);
-                    warGamesText("True Jedi!",50);
+                    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
+                    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                    onderonStreets(player);
+                } else {
+                    if (player->getAlignment() == mando.getAlignment()) {
+                        warGamesText("Boba Fett: you put up one hell of a fight, consider our little debt paid. Now get out of here!", 50);
+                        pauseProgram();
+                        onderonStreets(player);
+                    } else {
+                        warGamesText("Boba Fett: Watch your back, I'll be back for you.", 50);
+                        pauseProgram();
+                        onderonStreets(player);
+                    }
+                }
+                break;
+
+            case 2:
+                warGamesText("You find a quiet corner and observe the surroundings.\n", 50);
+                warGamesText("Boba Fett: Now, what is a person like you be doing in a place like this?", 50);
+
+                if (player->getAlignment() == mando.getAlignment()) {
+                    warGamesText("Boba Fett: Seems like you're collecting on old debts. I'll give you a ride. But after this, we're even.", 50);
+                    clearScreen();
+                    warGamesText("MISSION SUCCESS", 50);
+                    warGamesText("True Jedi!", 50);
                     std::cout << std::endl;
                     player->printPlayerInfo();
                     pauseProgram();
                     clearScreen();
+                } else {
+                    warGamesText("Boba Fett: Watch your back, I'll be back for you.", 50);
+                    pauseProgram();
+                    onderonStreets(player);
                 }
-            } else {
-                warGamesText("Boba Fett: Your kind isn't allowed in here. And lucky for us... we can't let you leave either.",50);
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-                player->loopRound((*player),mando,1);
-                if (player->getHealth() <= 0) {
-                        warGamesText("MISSION FAILED",50);
-                        player->printPlayerInfo();
-                        warGamesText("RESTARTING MISSION...", 50);
-                        pauseProgram();
-                        clearScreen();
-                        warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                        std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
-                        onderonStreets(player);
-                } else {
-                    warGamesText("Boba Fett: Watch your back, I'll be back for you.",50);
-                    pauseProgram();
-                    onderonStreets(player);
-                }                
-            }
+                break;
 
-            break;
-        case 2:
-            warGamesText("You find a quiet corner and observe the surroundings.\n",50);
-            warGamesText("Boba Fett: Now, what is a person like you be doing in a place like this?",50);
-            if (player->getAlignment() == mando.getAlignment()){
-                warGamesText("Boba Fett: Seems like you're collecting on old debts. I'll give you a ride. But after this we're even.",50);
-                clearScreen();
-                warGamesText("MISSION SUCCESS",50);
-                warGamesText("True Jedi!",50);
-                std::cout << std::endl;
-                player->printPlayerInfo();
-                pauseProgram();
-                clearScreen();
-            } else {
-                warGamesText("Boba Fett: Your kind isn't allowed in here. And lucky for us... we can't let you leave either.",50);
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-                player->loopRound((*player),mando,1);
-                if (player->getHealth() <= 0) {
-                        warGamesText("MISSION FAILED",50);
-                        player->printPlayerInfo();
-                        warGamesText("RESTARTING MISSION...", 50);
-                        pauseProgram();
-                        clearScreen();
-                        warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                        std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
-                        onderonStreets(player);
-                } else {
-                    warGamesText("Boba Fett: Watch your back, I'll be back for you.",50);
-                    pauseProgram();
-                    onderonStreets(player);
-                }                
-            }
-            break;
-        case 3:
-            warGamesText("You decide to leave the cantina and return to the streets.\n",50);
-            onderonStreets(player);
-            break;
-        default:
-            std::cout << "Invalid choice. You hesitate and attract attention.\n";
-    }
-    } while (choice >= 4);
+            case 3:
+                warGamesText("You decide to leave the cantina and return to the streets.\n", 50);
+                onderonStreets(player);
+                break;
+
+            default:
+                std::cout << "Invalid choice. You hesitate and attract attention.\n";
+                invalidInput = true;
+        }
+    } while (choice >= 4 || invalidInput);
 }
+
 
 void spacePort(Player* player) {
     CloneTrooper arcTrooper;
     arcTrooper.initializePlayer("CT-5555");  
     int choice;  
+    bool invalidInput;
 
     warGamesText("\nYou arrive at the busy space port. Galactic Republic clone troopers patrol the area.", 50);
     warGamesText("\nThe clone troopers approach you for identification.",50);
@@ -740,6 +731,8 @@ void spacePort(Player* player) {
     
 
     do {
+    invalidInput = false;
+    clearInputBuffer();
     std::cout << "Enter your choice: ";
     std::cin >> choice;
     std::cout << std::endl;
@@ -808,14 +801,16 @@ void spacePort(Player* player) {
             break;
         default:
             std::cout << "Invalid choice. The clone troopers become more alert.\n";
+            invalidInput = true;
     }
-    } while (choice >= 4);
+    } while (choice >= 4 || invalidInput);
 }
 
 void capitol(Player* player) {
     BattleDroid b1;
     b1.initializePlayer("B1-268");
     int choice;
+    bool invalidInput;
 
     warGamesText("\nYou cautiously approach the imposing capitol building. Seperatist forces are on high alert.", 50);
     warGamesText("Sepratist guards block your path.\n",50);
@@ -824,6 +819,8 @@ void capitol(Player* player) {
     std::cout << "3. Look for an alternate route\n";
     
     do {
+    invalidInput = false;
+    clearInputBuffer();
     std::cout << "Enter your choice: ";
     std::cin >> choice;
     switch (choice) {
@@ -893,6 +890,7 @@ void capitol(Player* player) {
             break;
         default:
             std::cout << "Invalid choice. The Sepratist battle droids become suspicious of your presence.\n";
+            invalidInput = true;
     }
-    } while (choice >= 4);
+    } while (choice >= 4 || invalidInput);
 }
