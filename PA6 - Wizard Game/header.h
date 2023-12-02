@@ -1,3 +1,13 @@
+/*
+Name: Gabe DiMartino
+Class: CPSC122, Fall 2023
+Date: November 30, 2023
+Programming Assignment: PA6
+Description: Header File
+I AM ATTEMPTING THE BONUS CHALLENGE
+AND OTHER CODE HAS BEEN ADDED
+*/
+
 #ifndef HEADER_H
 #define HEADER_H
 
@@ -66,6 +76,10 @@ const std::vector<std::string> friendlyFireMessages {
     {"Easy on the trigger! Teammates in your line of fire."},
 };
 
+void clearScreen();
+void clearInputBuffer() ;
+void pauseProgram();
+void warGamesText(const std::string&, int);
 
 //Class for your inventory
 //This should be implemented as one of the following:
@@ -295,13 +309,16 @@ public:
 	template <class T1, class T2>
 	bool attackPlayerSuccess(const T1& p1, const T2& p2)
 	{
+		std::string message;
 		try {
 			if (p1.getAlignment() == p2.getAlignment()) {
 				if (p1.getAlignment() == Player::Neutral) {
-					std::cout << p1.getName() << ": Nothing personal mate, just business." << std::endl;
+					message =  p1.getName() + ": Nothing personal mate, just business.";
+					warGamesText(message, 50);
 					return true;
 				} else {
-					std::cout << p2.getName() << ": " << friendlyFireMessages[generateRandomStat(0, (friendlyFireMessages.size() - 1))] << std::endl;
+					message = p2.getName() + ": " + friendlyFireMessages[generateRandomStat(0, (friendlyFireMessages.size() - 1))];
+					warGamesText(message, 50);
 					return false;
 				}
 			}
@@ -373,14 +390,6 @@ class Sith : public Jedi {
 	void initializePlayer(std::string newName);
 	~Sith(){}
 };
-
-
-
-
-void clearScreen();
-void clearInputBuffer() ;
-void pauseProgram();
-void warGamesText(const std::string&, int);
 
 std::string titleScreen();
 void fullGameMode();

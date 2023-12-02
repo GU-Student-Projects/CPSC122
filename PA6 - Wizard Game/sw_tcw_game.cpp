@@ -1,14 +1,15 @@
 /*
-	CPSC 122
-	PA6 - Players Starter Code
-	You should NOT be submitting a file named "pa6Starter.cpp"
-	Please use this as a starting point.
-	Cite all sources used.
+Name: Gabe DiMartino
+Class: CPSC122, Fall 2023
+Date: November 30, 2023
+Programming Assignment: PA6
+Description: Star Wars the Clone Wars: a terminal Game
+I AM ATTEMPTING THE BONUS CHALLENGE
+AND OTHER CODE HAS BEEN ADDED
 */
 
-#include "header.h"
 
-//don't forget about static variables.
+#include "header.h"
 
 int main(void)
 {
@@ -29,6 +30,8 @@ int main(void)
 
 	if (2 == choice){ 
 		fullGameMode();
+		warGamesText("THANK YOU FOR PLAYING MY GAME. ALL CREDIT GOES TO GABE DIMARTINO (MACBEE280).",50);
+		warGamesText("IF YOU ARE A GRADER, PLEASE PLAY THIS AGAIN AND SELECT PA DEMO FOR THE ASSIGNMENT INFORMATION",50);
 		return 0;}
 	else if (3 == choice) { return 0;}
 	else {
