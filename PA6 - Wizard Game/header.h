@@ -395,6 +395,8 @@ std::string titleScreen();
 void fullGameMode();
 int mainMenu();
 int characterSelection();
+void missionSuccess(Player*);
+void missionFailed(Player*);
 
 void onderonStreets(Player*);
 void cantina(Player*);

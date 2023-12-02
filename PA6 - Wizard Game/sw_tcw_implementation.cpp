@@ -536,6 +536,27 @@ void pauseProgram() {
     std::cin.get();
 }
 
+void missionSuccess(Player* player){
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    clearScreen();
+    warGamesText("MISSION SUCCESS", 50);
+    warGamesText("\n▇▇▇▇▇▇▇▇▇▇\n",100);
+    warGamesText("True Jedi!", 50);
+    std::cout << std::endl;
+    player->printPlayerInfo();
+    pauseProgram();
+}
+
+void missionFailed(Player* player){
+    warGamesText("MISSION FAILED", 50);
+    player->printPlayerInfo();
+    warGamesText("RESTARTING MISSION...", 50);
+    pauseProgram();
+    clearScreen();
+    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
+    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+}
+
 void fullGameMode() {
     int choice;
     std::string name;
@@ -592,21 +613,21 @@ void fullGameMode() {
     pauseProgram();
     clearScreen();
     warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-    std::cout << "You wake up dazed and confused in the streets of Onderon.\n";
+    warGamesText("You wake up dazed and confused in the streets of Onderon.",50);
     onderonStreets(player);
 }
 
 void onderonStreets(Player* player){
     int choice;
     bool invalidInput;
+    std::cout << "\nYou stand in the streets of Onderon. Choose your next move:\n";
+    std::cout << "1. Enter the Cantina\n";
+    std::cout << "2. Head to the Space Port\n";
+    std::cout << "3. Approach the Capitol\n";
+    std::cout << "4. Quit the mission\n";
+    
     do {
         invalidInput = false;
-        clearInputBuffer();
-        std::cout << "\nYou stand in the streets of Onderon. Choose your next move:\n";
-        std::cout << "1. Enter the Cantina\n";
-        std::cout << "2. Head to the Space Port\n";
-        std::cout << "3. Approach the Capitol\n";
-        std::cout << "4. Quit the mission\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
@@ -618,19 +639,20 @@ void onderonStreets(Player* player){
                 spacePort(player);
                 return;
             case 3:
-        
                 capitol(player);
                 return;
             case 4:
-                warGamesText("\nMission aborted. May the Force be with you!\n",50);
+                warGamesText("\nMission aborted. May the Force be with you!\n", 50);
                 return;
             default:
                 std::cout << "Invalid choice. Try again.\n";
                 invalidInput = true;
+                clearInputBuffer();
         }
 
-    } while (choice != 4 || invalidInput);
+    } while (choice != 4 && invalidInput);
 }
+
 
 void cantina(Player* player) {
     BountyHunter mando;
@@ -647,7 +669,6 @@ void cantina(Player* player) {
 
     do {
         invalidInput = false;
-        clearInputBuffer();
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
@@ -663,13 +684,7 @@ void cantina(Player* player) {
                 player->loopRound((*player), mando, 1);
 
                 if (player->getHealth() <= 0) {
-                    warGamesText("MISSION FAILED", 50);
-                    player->printPlayerInfo();
-                    warGamesText("RESTARTING MISSION...", 50);
-                    pauseProgram();
-                    clearScreen();
-                    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                    missionFailed(player);
                     onderonStreets(player);
                 } else {
                     if (player->getAlignment() == mando.getAlignment()) {
@@ -690,12 +705,7 @@ void cantina(Player* player) {
 
                 if (player->getAlignment() == mando.getAlignment()) {
                     warGamesText("Boba Fett: Seems like you're collecting on old debts. I'll give you a ride. But after this, we're even.", 50);
-                    clearScreen();
-                    warGamesText("MISSION SUCCESS", 50);
-                    warGamesText("True Jedi!", 50);
-                    std::cout << std::endl;
-                    player->printPlayerInfo();
-                    pauseProgram();
+                    missionSuccess(player);
                     clearScreen();
                 } else {
                     warGamesText("Boba Fett: Watch your back, I'll be back for you.", 50);
@@ -712,6 +722,7 @@ void cantina(Player* player) {
             default:
                 std::cout << "Invalid choice. You hesitate and attract attention.\n";
                 invalidInput = true;
+                clearInputBuffer();
         }
     } while (choice >= 4 || invalidInput);
 }
@@ -732,7 +743,6 @@ void spacePort(Player* player) {
 
     do {
     invalidInput = false;
-    clearInputBuffer();
     std::cout << "Enter your choice: ";
     std::cin >> choice;
     std::cout << std::endl;
@@ -740,13 +750,7 @@ void spacePort(Player* player) {
         case 1:
             if (player->getAlignment() == arcTrooper.getAlignment()){
                 warGamesText("CT-5555: It's good to see you in one piece commander, hurry up and get on board so we can leave this aweful system.",50);
-                std::this_thread::sleep_for(std::chrono::seconds(3));
-                clearScreen();
-                warGamesText("MISSION SUCCESS",50);
-                warGamesText("True Jedi!",50);
-                std::cout << std::endl;
-                player->printPlayerInfo();
-                pauseProgram();
+                missionSuccess(player);
                 clearScreen();
             } else {
                 warGamesText("CT-5555: Thought you could get passed me huh?", 50);
@@ -754,13 +758,7 @@ void spacePort(Player* player) {
                 player->loopRound((*player),arcTrooper,1);
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 if (player->getHealth() <= 0) {
-                    warGamesText("MISSION FAILED",50);
-                    player->printPlayerInfo();
-                    warGamesText("RESTARTING MISSION...", 50);
-                    pauseProgram();
-                    clearScreen();
-                    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                    missionFailed(player);
                     onderonStreets(player);
                 } else {
                     warGamesText("\nCT-5555: The mission, the nightmares, they're finally... over.", 50);
@@ -781,13 +779,7 @@ void spacePort(Player* player) {
             player->loopRound((*player),arcTrooper,1);
             std::this_thread::sleep_for(std::chrono::seconds(3));
             if (player->getHealth() <= 0) {
-                warGamesText("MISSION FAILED",50);
-                player->printPlayerInfo();
-                warGamesText("RESTARTING MISSION...", 50);
-                pauseProgram();
-                clearScreen();
-                warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                missionFailed(player);
                 onderonStreets(player);
             } else {
                 warGamesText("\nCT-5555: The mission, the nightmares, they're finally... over.", 50);
@@ -802,6 +794,7 @@ void spacePort(Player* player) {
         default:
             std::cout << "Invalid choice. The clone troopers become more alert.\n";
             invalidInput = true;
+            clearInputBuffer();
     }
     } while (choice >= 4 || invalidInput);
 }
@@ -820,7 +813,6 @@ void capitol(Player* player) {
     
     do {
     invalidInput = false;
-    clearInputBuffer();
     std::cout << "Enter your choice: ";
     std::cin >> choice;
     switch (choice) {
@@ -836,13 +828,7 @@ void capitol(Player* player) {
                 player->loopRound((*player),b1,1);
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 if (player->getHealth() <= 0) {
-                    warGamesText("MISSION FAILED",50);
-                    player->printPlayerInfo();
-                    warGamesText("RESTARTING MISSION...", 50);
-                    pauseProgram();
-                    clearScreen();
-                    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                    missionFailed(player);
                     onderonStreets(player);
                 } else {
                 warGamesText("\nB1-268: Roger ... roger", 50);
@@ -855,13 +841,7 @@ void capitol(Player* player) {
             warGamesText("B1-268: Please halt and identify yourself troublemaker.",50);
             if (!(player->attackPlayerSuccess((*player), b1))){
                 warGamesText("B1-268: Thank you, and welcome to Onderon. Right this way.", 50);
-                std::this_thread::sleep_for(std::chrono::seconds(3));
-                clearScreen();
-                warGamesText("MISSION SUCCESS",50);
-                warGamesText("True Jedi!",50);
-                std::cout << std::endl;
-                player->printPlayerInfo();
-                pauseProgram();
+                missionSuccess(player);
                 clearScreen();
             } else  {
                 warGamesText("B1-268: You are not authorized to be in this here, please remain calm as you are transported to detention cell 2187", 50);
@@ -869,13 +849,7 @@ void capitol(Player* player) {
                 player->loopRound((*player),b1,1);
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 if (player->getHealth() <= 0) {
-                    warGamesText("MISSION FAILED",50);
-                    player->printPlayerInfo();
-                    warGamesText("RESTARTING MISSION...", 50);
-                    pauseProgram();
-                    clearScreen();
-                    warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
-                    std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
+                    missionFailed(player);
                     onderonStreets(player);
                 } else {
                 warGamesText("\nB1-268: Roger ... roger", 50);
@@ -891,6 +865,7 @@ void capitol(Player* player) {
         default:
             std::cout << "Invalid choice. The Sepratist battle droids become suspicious of your presence.\n";
             invalidInput = true;
+            clearInputBuffer();
     }
     } while (choice >= 4 || invalidInput);
 }
