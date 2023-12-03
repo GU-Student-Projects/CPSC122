@@ -38,7 +38,7 @@ int main(void)
 	clearScreen();
 	srand(time(NULL)); //generate seed
 
-	jediMaster.initializePlayer("Mace Windu");
+	jediMaster.initializePlayer("Mace Windu"); // initialize objects
 	mando.initializePlayer("Jango Fett");
 
 	std::cout << "Filled the list ... " << std::endl;
@@ -46,7 +46,7 @@ int main(void)
 	jediMaster.displayInventory();
 	std::cout << "Demonstrating removing an item from the list ... " << std::endl;
 	jediMaster.removeInventoryItem();
-	jediMaster.displayInventory();
+	jediMaster.displayInventory(); //demonstrate the use of the stack
 
 	std::cout << "\nWelcome to the battle arena!\nToday we will be seeing a battle between a Jedi and a Bounty Hunter.\nOur first participant is:\n" << std::endl;
 	jediMaster.printPlayerInfo();
@@ -60,6 +60,7 @@ int main(void)
 	jediMaster.printPlayerInfo();
 	mando.printPlayerInfo();
 
+	/* BONUS ROUND CODE*/
 	std::cout<<"\nRound Two! (Derived Classes)"<<std::endl;
 	captain.initializePlayer("Rex");
 	sithLord.initializePlayer("Dooku");
@@ -74,6 +75,8 @@ int main(void)
 
 	captain.printPlayerInfo();
 	sithLord.printPlayerInfo();
+
+	/*END OF BONUS*/
 	
 	}
 

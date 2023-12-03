@@ -59,6 +59,7 @@ const std::vector<InventoryItem> possibleItems{
 	{"Thermal Detonator", 50 , 0},
 	{ "Droid Popper", 5, 0} };
 
+//Global CONSTANT variable containing an assortment of messages to be used by the game
 const std::vector<std::string> friendlyFireMessages {
     {"Caution! Friendly fire, watch your aim!"},
     {"Easy there, ally! Check your targets."},
@@ -76,9 +77,13 @@ const std::vector<std::string> friendlyFireMessages {
     {"Easy on the trigger! Teammates in your line of fire."},
 };
 
+//Utility to clear terminal screen
 void clearScreen();
+//Utility to clear cin input
 void clearInputBuffer() ;
+//Utility to pause the program
 void pauseProgram();
+//Utility to print text 1 character at a time
 void warGamesText(const std::string&, int);
 
 //Class for your inventory
@@ -184,8 +189,6 @@ public:
 		defenceSkill = 1.0;
 		
 		numPlayers++;
-
-		//TODO: initialize PlayerInventory member (fill it with "weapons" from global constant vector)
 	}
 
 	//Destructor
@@ -244,9 +247,16 @@ public:
 		std::cout << std::endl;
 	}
 
-	//Template Functions
-	//prints out the "header" information for each attack turn
-	//see example output
+	/*************************************************************
+    * Function: loop Round ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: Template function to loop through each game round 
+	* until a player dies. 
+    * Input parameters: Class objects
+    * Returns: player object modifications
+    *************************************************************/
+
 	template <class T1, class T2>
 	void loopRound(T1& p1, T2& p2, int turn){
 		while ((p1.getHealth() > 0) && (p2.getHealth() > 0)) {
@@ -255,7 +265,7 @@ public:
 		p1.printBattleCard(p1, p2, turn);
 		std::cout<<std::endl;
 		if (p2.getTurnSuccess()){
-			p1.setHealth(p1.getTurnHealth());
+			p1.setHealth(p1.getTurnHealth()); //only change health upon success
 		}
 		if (p1.getTurnSuccess()){
 			p2.setHealth(p2.getTurnHealth());
@@ -264,6 +274,16 @@ public:
 		}
 	}
 
+	/*************************************************************
+    * Function: playGame ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: Template function to run through one round of
+	* of battles
+    * Input parameters: Class objects
+    * Returns: player object modifications
+    *************************************************************/
+
 	template <class T1, class T2>
 	void playGame(T1& p1, T2& p2){
 		p1.setTurnSuccess(p1.attackPlayerSuccess(p1, p2));
@@ -271,11 +291,20 @@ public:
 		p1.setTurnWeapon(tempItem.weaponName);
 
 		if (p1.getTurnSuccess()) {
-			p1.setTurnDamage(((tempItem.damage * p1.getOffenceSkill()) + tempItem.damage)*p2.getDefenceSkill());
+			p1.setTurnDamage(((tempItem.damage * p1.getOffenceSkill()) + tempItem.damage)*p2.getDefenceSkill()); //set the damage  according to player 1's offence and player 2's defence
 			p2.setTurnHealth(p2.getHealth() - p1.getTurnDamage());
-			p1.setExperience(p1.getExperience() + generateRandomStat(1,15));
+			p1.setExperience(p1.getExperience() + generateRandomStat(10,25)); // generate XP
 		}
 	}
+
+	/*************************************************************
+    * Function: printBattleCard ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: Template function display each round
+    * Input parameters: Class objects
+    * Returns: Terminal ouput
+    *************************************************************/
 
 	template <class T1, class T2>
 	static void printBattleCard(const T1& p1, const T2& p2, int turn) 
@@ -305,14 +334,23 @@ public:
 		return;
 	}
 
+	/*************************************************************
+    * Function: attackPlayerSuccess ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: Template function to determine the success of
+	* an attack in the battle based on Alignment and sensitivity
+    * Input parameters: Class objects
+    * Returns: Bool T/F
+    *************************************************************/
 
 	template <class T1, class T2>
 	bool attackPlayerSuccess(const T1& p1, const T2& p2)
 	{
 		std::string message;
 		try {
-			if (p1.getAlignment() == p2.getAlignment()) {
-				if (p1.getAlignment() == Player::Neutral) {
+			if (p1.getAlignment() == p2.getAlignment()) { //If the same alignment do nothing
+				if (p1.getAlignment() == Player::Neutral) { //If neutral disregard the rules
 					message =  p1.getName() + ": Nothing personal mate, just business.";
 					warGamesText(message, 50);
 					return true;
@@ -325,14 +363,14 @@ public:
 			return (generateRandomStat(1, 100) / 100.0 <= p1.getForceSensitivity());
 		} catch (...) {
 			std::cerr << "An exception occurred during the attackPlayerSuccess function." << std::endl;
-			return false;
+			return false; // handle any exceptions in the battle sequence
 		}
 	}
 
 
 };
 
-class Jedi : public Player {	
+class Jedi : public Player {	//Inherited from player
 
 	protected:
 		int lightsaberForm = 1;
@@ -352,7 +390,7 @@ class Jedi : public Player {
 	~Jedi(){}
 };
 
-class BountyHunter : public Player {
+class BountyHunter : public Player { //inherited from player
 
 	protected:
 		int weaponType = 1;
@@ -372,32 +410,35 @@ class BountyHunter : public Player {
 
 };
 
-class CloneTrooper : public BountyHunter {
+class CloneTrooper : public BountyHunter { //inherited from a derive class
 	public:
 		void initializePlayer(std::string newName);
 		~CloneTrooper(){}
 };
 
-class BattleDroid : public BountyHunter {
+class BattleDroid : public BountyHunter { //inherited from a derive class
 	
 	public:
 	void initializePlayer(std::string newName);
 	~BattleDroid(){}
 };
 
-class Sith : public Jedi {
+class Sith : public Jedi { //inherited from a derive class
 	public:
 	void initializePlayer(std::string newName);
 	~Sith(){}
 };
 
+//print the main title screen
 std::string titleScreen();
+//run the full game mode
 void fullGameMode();
 int mainMenu();
 int characterSelection();
 void missionSuccess(Player*);
 void missionFailed(Player*);
 
+//Game locations
 void onderonStreets(Player*);
 void cantina(Player*);
 void spacePort(Player*);

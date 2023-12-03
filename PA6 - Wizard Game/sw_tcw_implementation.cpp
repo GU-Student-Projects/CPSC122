@@ -10,7 +10,7 @@ AND OTHER CODE HAS BEEN ADDED
 
 #include "header.h"
 
-int Player::numPlayers = 0;
+int Player::numPlayers = 0; //initialization of static variables
 std::vector<int> Player::playerIds;
 
      /*************************************************************
@@ -33,19 +33,40 @@ void clearScreen(){ //function to clear terminal
 #endif
 }
 
+     /*************************************************************
+    * Function: generatePlayerID()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: generates a random number for the playerID member
+    * Input parameters: void
+    * Returns: PlayerID
+    * Pre: Player object
+    * Post: Filled member
+    *************************************************************/
+
 int Player::generatePlayerId() const {
     int newID;
     do {
         newID = generateRandomStat(1, MAX_ID_VALUE);
-    } while (playerIdIsInList(newID));
+    } while (playerIdIsInList(newID)); // Checks if the ID is used
 
-    playerIds.push_back(newID);
+    playerIds.push_back(newID); // adds ID to vector
     return newID;
 }
 
+     /*************************************************************
+    * Function: playerIdIsInList ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: checks to see if an ID is already used
+    * Input parameters: int ID
+    * Returns: bool
+    * Pre: generated ID
+    * Post: valid ID
+    *************************************************************/
 
 bool Player::playerIdIsInList(int id) {
-    for (int playerId : playerIds) {
+    for (int playerId : playerIds) { //For a playerID in Player IDS
         if (playerId == id) {
             return true;
         }
@@ -53,10 +74,27 @@ bool Player::playerIdIsInList(int id) {
     return false;
 }
 
+     /*************************************************************
+    * Function: generateRandomStat ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: generates random int from min to max
+    * Input parameters: int min and max
+    * Returns: value
+    *************************************************************/
 
 int Player::generateRandomStat(int min, int max) const {
     return min + rand() % (max - min + 1);
 }
+
+     /*************************************************************
+    * Function: convertAlignment ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: converts enumerated values into Strings
+    * Input parameters: int alignment value
+    * Returns: string value
+    *************************************************************/
 
 std::string Player::convertAlignment(int alignment) const{
 	if (alignment == Republic){
@@ -68,27 +106,60 @@ std::string Player::convertAlignment(int alignment) const{
 	}
 }
 
+     /*************************************************************
+    * Function: PlayerInventory()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: Initialize the PlayerInventory
+    * Input parameters: none
+    * Returns: empty stack
+    *************************************************************/
 
 PlayerInventory::PlayerInventory(){
 	head = nullptr;
 	inventorySize = 0;
 }
 
+     /*************************************************************
+    * Function: ~PlayerInventory ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: Deletes player inventory stack list
+    * Input parameters: none
+    * Returns: deconstructed Stack
+    *************************************************************/
 PlayerInventory::~PlayerInventory() {
     while (!isEmpty()) {
         pop();
     }
 }
 
-void PlayerInventory::push(InventoryItem tempItem){
-	PlayerInventoryNode* tempNode = new PlayerInventoryNode;
+     /*************************************************************
+    * Function: push ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: adds Inventory Item to stack
+    * Input parameters: Inventory Item
+    * Returns: none
+    *************************************************************/
 
-	tempNode->item = tempItem;
-	tempNode->nextPtr = head;
+void PlayerInventory::push(InventoryItem tempItem){
+	PlayerInventoryNode* tempNode = new PlayerInventoryNode; //create node
+
+	tempNode->item = tempItem; // add item to node
+	tempNode->nextPtr = head; // make tempNode the new head
 	head = tempNode;
-	inventorySize++;
+	inventorySize++; // increase inventory size
 }
 
+     /*************************************************************
+    * Function: pop ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: deletes first item in stack
+    * Input parameters: none
+    * Returns: none
+    *************************************************************/
 void PlayerInventory::pop() {
     if (isEmpty()) {
         return;
@@ -99,31 +170,66 @@ void PlayerInventory::pop() {
     head = helperNode;
 
     if (head == nullptr) {
-        inventorySize = 0;
+        inventorySize = 0; // control inventory size monitoring
     } else {
-        inventorySize--;
+        inventorySize--; // control inventory size monitoring
     }
 }
 
+     /*************************************************************
+    * Function: isEmpty ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: checks to see if player inventory stack is empty
+    * Input parameters: none
+    * Returns: bool T/F
+    *************************************************************/
 
 bool PlayerInventory::isEmpty(){
 	return head == nullptr ? true : false;
 }
 
+     /*************************************************************
+    * Function: isFUll ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: Checks to see if player inventory stack is full
+    * Input parameters: none
+    * Returns: bool T/F
+    *************************************************************/
+
 bool PlayerInventory::isFull(){
 	return inventorySize == MAX_INVENTORY ? true : false;
 }
 
+     /*************************************************************
+    * Function: displayList ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: Recursively displays each item in the stack
+    * Input parameters: Player Inventory Node
+    * Returns: Terminal output
+    *************************************************************/
+
 void PlayerInventory::displayList(PlayerInventoryNode* tempNode) const {
     if (tempNode == nullptr) { 
-        return; 
+        return; //IF at the end of the list, end the recursion
     }
 
     std::cout << "Weapon: " << tempNode->item.weaponName;
     std::cout << " - Damage: " << tempNode->item.damage;
-    std::cout << " Defence: " << tempNode->item.defence << std::endl;
-    displayList(tempNode->nextPtr);
+    std::cout << " Defence: " << tempNode->item.defence << std::endl; // terminal out
+    displayList(tempNode->nextPtr); // call the next item to display
 }
+
+     /*************************************************************
+    * Function: retrieveItem ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: brings a random item from the stack to a new scope
+    * Input parameters: none
+    * Returns: Random Inventory Item
+    *************************************************************/
 
 InventoryItem PlayerInventory::retrieveItem(){
     PlayerInventoryNode* helperNode = head;
@@ -131,20 +237,28 @@ InventoryItem PlayerInventory::retrieveItem(){
         return {"Empty", 0, 0};
     }
 
-    for(int i = 0; i < std::rand() % inventorySize; i++){
+    for(int i = 0; i < std::rand() % inventorySize; i++){ //Get a random node
         helperNode = helperNode->nextPtr;
     }
     
     return helperNode->item;
 }
 
+     /*************************************************************
+    * Function: Jedi::initializePlayer ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: initializes objects of the Jedi Class
+    * Input parameters: string name
+    * Returns: fully generated object
+    *************************************************************/
 
 void Jedi::initializePlayer(std::string newName) {
     subclass = "Jedi";
     name = newName;
     health = 100;
     playerId = generatePlayerId();
-    alignment = Republic;
+    alignment = Republic; // Alignment ENUM
 
     lightsaberForm = generateRandomStat(1, 3);
     forceSensitivity = 0.01 * generateRandomStat(60, 100); // Accuracy
@@ -152,7 +266,7 @@ void Jedi::initializePlayer(std::string newName) {
     defenceSkill = 0.01 * generateRandomStat(10, 60); // Defence Multiplier
     offenceSkill = 0.01 * generateRandomStat(10, 60); // Damage Multiplier
 
-    if (forceSensitivity > 0.8) {
+    if (forceSensitivity > 0.8) { //depending on the force sensitivity and lightsaber form, the stats can change.
         if (lightsaberForm == 1) {
             defenceSkill = 0.01 * generateRandomStat(60, 100);
             offenceSkill = 0.01 * generateRandomStat(60, 100);
@@ -174,11 +288,19 @@ void Jedi::initializePlayer(std::string newName) {
     }
 
     while(!playerInventory.isFull()){
-        playerInventory.push(possibleItems[generateRandomStat(0,(possibleItems.size()-1))]);
+        playerInventory.push(possibleItems[generateRandomStat(0,(possibleItems.size()-1))]); //add random items to the inventory
     }
 
 }
 
+     /*************************************************************
+    * Function: printPlayerClassInfo ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: displays the class info
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
 
 void Jedi::printPlayerClassInfo() const {
     std::cout << "Force Sensitivity: " << this->forceSensitivity << std::endl;
@@ -192,20 +314,55 @@ void Jedi::printPlayerClassInfo() const {
     }
 }
 
+     /*************************************************************
+    * Function: displayInventory ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the player inventory displayList function
+    * Input: void
+    * Returns: terminal output
+    *************************************************************/
+
 void Jedi::displayInventory() const{
     playerInventory.displayList(playerInventory.getHead());
     std::cout<< "Size: "<< playerInventory.getInventorySize() << std::endl;
 }
 
+     /*************************************************************
+    * Function: removeInventoryItem ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the playerInventory pop function
+    * Input parameters: void
+    * Returns: modified Player inventory
+    *************************************************************/
+
 void Jedi::removeInventoryItem() {
     playerInventory.pop();
 }
+
+     /*************************************************************
+    * Function: addInventoryItem ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the playerInventory push function
+    * Input parameters: Inventory Item
+    * Returns: modified player Inventory
+    *************************************************************/
 
 void Jedi::addInventoryItem(InventoryItem tempItem) {
     playerInventory.push(tempItem);
 }
 
-
+     /*************************************************************
+    * Function: Sith::initializePlayer ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: initializes objects of the Sith Class
+    * BONUS: Derived Class from Jedi
+    * Input parameters: string name
+    * Returns: fully generated object
+    *************************************************************/
 
 void Sith::initializePlayer(std::string newName) {
     subclass = "Sith";
@@ -220,7 +377,7 @@ void Sith::initializePlayer(std::string newName) {
     defenceSkill = 0.01 * generateRandomStat(10, 60); // Defence Multiplier
     offenceSkill = 0.01 * generateRandomStat(10, 60); // Damage Multiplier
 
-    if (forceSensitivity > 0.8) {
+    if (forceSensitivity > 0.8) { //depending on the force sensitivity and lightsaber form, the stats can change.
         if (lightsaberForm == 1) {
             defenceSkill = 0.01 * generateRandomStat(60, 100);
             offenceSkill = 0.01 * generateRandomStat(60, 100);
@@ -237,7 +394,14 @@ void Sith::initializePlayer(std::string newName) {
 
 }
 
-
+     /*************************************************************
+    * Function: BountyHuner::initializePlayer ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: initializes objects of the Bounty Hunter Class
+    * Input parameters: string name
+    * Returns: fully generated object
+    *************************************************************/
 
 void BountyHunter::initializePlayer(std::string newName) {
     subclass = "Bounty Hunter";
@@ -252,7 +416,7 @@ void BountyHunter::initializePlayer(std::string newName) {
     defenceSkill = 0.01 * generateRandomStat(10, 60); // Defence Multiplier
     offenceSkill = 0.01 * generateRandomStat(10, 60); // Damage Multiplier
 
-    if (forceSensitivity > 0.8) {
+    if (forceSensitivity > 0.8) { //Unlike the Jedi/Sith class, the Stats are based on what type of weapon is used
         if (weaponType == 1) {
             defenceSkill = 0.01 * generateRandomStat(60, 100);
             offenceSkill = 0.01 * generateRandomStat(60, 100);
@@ -263,11 +427,20 @@ void BountyHunter::initializePlayer(std::string newName) {
         }
     }
 
-    while(!playerInventory.isFull()){
+    while(!playerInventory.isFull()){ //Fill the inventory with random items
         playerInventory.push(possibleItems[generateRandomStat(0,(possibleItems.size()-1))]);
     }
 
 }
+
+     /*************************************************************
+    * Function: convertWeapon ()
+    * Date Created: 11/28/23
+    * Date Last Modified: 11/28/23
+    * Description: converts the weapon type integer into a string
+    * Input parameters: integer 
+    * Returns: string
+    *************************************************************/
 
 std::string BountyHunter::convertWeapon(int weaponType) const {
     if (weaponType == 1){
@@ -279,6 +452,15 @@ std::string BountyHunter::convertWeapon(int weaponType) const {
 	}
 }
 
+     /*************************************************************
+    * Function: printPlayerClassInfo ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: displays the class info
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
+
 void BountyHunter::printPlayerClassInfo() const {
     std::cout << "Accuracy: " << this->forceSensitivity << std::endl;
     std::cout << "Loyalty: " << convertAlignment(this->alignment) << std::endl;
@@ -287,18 +469,56 @@ void BountyHunter::printPlayerClassInfo() const {
     std::cout << "Offence Skill: " << this->offenceSkill << std::endl;
 }
 
+     /*************************************************************
+    * Function: removeInventoryItem ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the playerInventory pop function
+    * Input parameters: void
+    * Returns: modified Player inventory
+    *************************************************************/
+
 void BountyHunter::removeInventoryItem() {
     playerInventory.pop();
 }
+
+     /*************************************************************
+    * Function: addInventoryItem ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the playerInventory push function
+    * Input parameters: Inventory Item
+    * Returns: modified player Inventory
+    *************************************************************/
 
 void BountyHunter::addInventoryItem(InventoryItem tempItem) {
     playerInventory.push(tempItem);
 }
 
+     /*************************************************************
+    * Function: displayInventory ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: calls the player inventory displayList function
+    * Input: void
+    * Returns: terminal output
+    *************************************************************/
+
 void BountyHunter::displayInventory() const{
     playerInventory.displayList(playerInventory.getHead());
     std::cout<< "Size: "<< playerInventory.getInventorySize() << std::endl;
 }
+
+
+     /*************************************************************
+    * Function: CloneTrooper::initializePlayer ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: initializes objects of the CloneTrooper Class
+    * BONUS: Derived Class from Bounty Hunter
+    * Input parameters: string name
+    * Returns: fully generated object
+    *************************************************************/
 
 void CloneTrooper::initializePlayer(std::string newName) {
     subclass = "Clone Trooper";
@@ -330,6 +550,16 @@ void CloneTrooper::initializePlayer(std::string newName) {
 
 }
 
+     /*************************************************************
+    * Function: BattleDroid::initializePlayer ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: initializes objects of the BattleDroid Class
+    * BONUS: Derived Class from Bounty Hunter
+    * Input parameters: string name
+    * Returns: fully generated object
+    *************************************************************/
+
 void BattleDroid::initializePlayer(std::string newName) {
     subclass = "Battle Droid";
     name = newName;
@@ -360,40 +590,57 @@ void BattleDroid::initializePlayer(std::string newName) {
 
 }
 
-std::string titleScreen(){
-std::string title; 
+     /*************************************************************
+    * Function: tittleScreen ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints game titleScreen
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
 
-title =  "    /$$$$$$   /$$                                /$$      /$$                                                                                  \n";
-title += "    /$$__  $$ | $$                              | $$  /$ | $$                                                                                 \n";   
-title += "   | $$  \\__/$$$$$$    /$$$$$$   /$$$$$$        | $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$                                                \n";
-title += "   |  $$$$$$|_  $$_/   |____  $$ /$$__  $$      | $$/$$ $$ $$ |____  $$ /$$__  $$ /$$_____/|__/                                               \n";
-title += "    \\____  $$ | $$      /$$$$$$$| $$  \\__/      | $$$$_  $$$$  /$$$$$$$| $$  \\__/|  $$$$$$                                                   \n";
-title += "    /$$  \\ $$ | $$ /$$ /$$__  $$| $$            | $$$/ \\  $$$ /$$__  $$| $$       \\____  $$ /$$                                               \n";
-title += "   |  $$$$$$/ |  $$$$/|  $$$$$$$| $$            | $$/   \\  $$|  $$$$$$$| $$       /$$$$$$$/|__/                                               \n";
-title += "    \\______/   \\___/   \\_______/|__/            |__/     \\_/ \\_______/|__/      |_______/                                                    \n\n";
-title += "    /$$$$$$$$ /$$                        /$$$$$$  /$$                                     /$$      /$$                                        \n";
-title += "   |__  $$__/| $$                       /$$__  $$| $$                                    | $$  /$ | $$                                        \n";
-title += "      | $$   | $$$$$$$   /$$$$$$       | $$  \\__/| $$  /$$$$$$  /$$$$$$$   /$$$$$$       | $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$          \n";
-title += "      | $$   | $$__  $$ /$$__  $$      | $$      | $$ /$$__  $$| $$__  $$ /$$__  $$      | $$/$$ $$ $$ |____  $$ /$$__  $$ /$$_____/          \n";
-title += "      | $$   | $$  \\ $$| $$$$$$$$      | $$      | $$| $$  \\ $$| $$  \\ $$| $$$$$$$$      | $$$$_  $$$$  /$$$$$$$| $$  \\__/|  $$$$$$           \n";
-title += "      | $$   | $$  | $$| $$_____/      | $$    $$| $$| $$  | $$| $$  | $$| $$_____/      | $$$/ \\  $$$ /$$__  $$| $$       \\____  $$          \n";
-title += "      | $$   | $$  | $$|  $$$$$$$      |  $$$$$$/| $$|  $$$$$$/| $$  | $$|  $$$$$$$      | $$/   \\  $$|  $$$$$$$| $$       /$$$$$$$/          \n";
-title += "      |__/   |__/  |__/ \\_______/       \\______/ |__/ \\______/ |__/  |__/ \\_______/      |__/     \\__/ \\_______/|__/      |_______/           \n\n";
-title += "     /$$$$$$        /$$$$$$$$                                /$$                     /$$        /$$$$$$                                       \n";
-title += "    /$$__  $$      |__  $$__/                               |__/                    | $$       /$$__  $$                                      \n";
-title += "   | $$  \\ $$         | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$  /$$ /$$$$$$$   /$$$$$$ | $$      | $$  \\__/  /$$$$$$  /$$$$$$/$$$$   /$$$$$$     \n";
-title += "   | $$$$$$$$         | $$ /$$__  $$ /$$__  $$| $$_  $$_  $$| $$| $$__  $$ |____  $$| $$      | $$ /$$$$ |____  $$| $$_  $$_  $$ /$$__  $$    \n";
-title += "   | $$__  $$         | $$| $$$$$$$$| $$  \\__/| $$ \\ $$ \\ $$| $$| $$  \\ $$  /$$$$$$$| $$      | $$|_  $$  /$$$$$$$| $$ \\ $$ \\ $$| $$$$$$$$    \n";
-title += "   | $$  | $$         | $$| $$_____/| $$      | $$ | $$ | $$| $$| $$  | $$ /$$__  $$| $$      | $$  \\ $$ /$$__  $$| $$ | $$ | $$| $$_____/    \n";
-title += "   | $$  | $$         | $$|  $$$$$$$| $$      | $$ | $$ | $$| $$| $$  | $$|  $$$$$$$| $$      |  $$$$$$/|  $$$$$$$| $$ | $$ | $$|  $$$$$$$    \n";
-title += "   |__/  |__/         |__/ \\_______/|__/      |__/ |__/ |__/|__/|__/  |__/ \\_______/|__/       \\______/ \\_______/|__/ |__/ |__/ \\_______/    \n";
-                                                                                                                                         
-return title;
+std::string titleScreen(){
+    std::string title; 
+
+    title =  "    /$$$$$$   /$$                                /$$      /$$                                                                                  \n";
+    title += "    /$$__  $$ | $$                              | $$  /$ | $$                                                                                 \n";   
+    title += "   | $$  \\__/$$$$$$    /$$$$$$   /$$$$$$        | $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$                                                \n";
+    title += "   |  $$$$$$|_  $$_/   |____  $$ /$$__  $$      | $$/$$ $$ $$ |____  $$ /$$__  $$ /$$_____/|__/                                               \n";
+    title += "    \\____  $$ | $$      /$$$$$$$| $$  \\__/      | $$$$_  $$$$  /$$$$$$$| $$  \\__/|  $$$$$$                                                   \n";
+    title += "    /$$  \\ $$ | $$ /$$ /$$__  $$| $$            | $$$/ \\  $$$ /$$__  $$| $$       \\____  $$ /$$                                               \n";
+    title += "   |  $$$$$$/ |  $$$$/|  $$$$$$$| $$            | $$/   \\  $$|  $$$$$$$| $$       /$$$$$$$/|__/                                               \n";
+    title += "    \\______/   \\___/   \\_______/|__/            |__/     \\_/ \\_______/|__/      |_______/                                                    \n\n";
+    title += "    /$$$$$$$$ /$$                        /$$$$$$  /$$                                     /$$      /$$                                        \n";
+    title += "   |__  $$__/| $$                       /$$__  $$| $$                                    | $$  /$ | $$                                        \n";
+    title += "      | $$   | $$$$$$$   /$$$$$$       | $$  \\__/| $$  /$$$$$$  /$$$$$$$   /$$$$$$       | $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$          \n";
+    title += "      | $$   | $$__  $$ /$$__  $$      | $$      | $$ /$$__  $$| $$__  $$ /$$__  $$      | $$/$$ $$ $$ |____  $$ /$$__  $$ /$$_____/          \n";
+    title += "      | $$   | $$  \\ $$| $$$$$$$$      | $$      | $$| $$  \\ $$| $$  \\ $$| $$$$$$$$      | $$$$_  $$$$  /$$$$$$$| $$  \\__/|  $$$$$$           \n";
+    title += "      | $$   | $$  | $$| $$_____/      | $$    $$| $$| $$  | $$| $$  | $$| $$_____/      | $$$/ \\  $$$ /$$__  $$| $$       \\____  $$          \n";
+    title += "      | $$   | $$  | $$|  $$$$$$$      |  $$$$$$/| $$|  $$$$$$/| $$  | $$|  $$$$$$$      | $$/   \\  $$|  $$$$$$$| $$       /$$$$$$$/          \n";
+    title += "      |__/   |__/  |__/ \\_______/       \\______/ |__/ \\______/ |__/  |__/ \\_______/      |__/     \\__/ \\_______/|__/      |_______/           \n\n";
+    title += "     /$$$$$$        /$$$$$$$$                                /$$                     /$$        /$$$$$$                                       \n";
+    title += "    /$$__  $$      |__  $$__/                               |__/                    | $$       /$$__  $$                                      \n";
+    title += "   | $$  \\ $$         | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$  /$$ /$$$$$$$   /$$$$$$ | $$      | $$  \\__/  /$$$$$$  /$$$$$$/$$$$   /$$$$$$     \n";
+    title += "   | $$$$$$$$         | $$ /$$__  $$ /$$__  $$| $$_  $$_  $$| $$| $$__  $$ |____  $$| $$      | $$ /$$$$ |____  $$| $$_  $$_  $$ /$$__  $$    \n";
+    title += "   | $$__  $$         | $$| $$$$$$$$| $$  \\__/| $$ \\ $$ \\ $$| $$| $$  \\ $$  /$$$$$$$| $$      | $$|_  $$  /$$$$$$$| $$ \\ $$ \\ $$| $$$$$$$$    \n";
+    title += "   | $$  | $$         | $$| $$_____/| $$      | $$ | $$ | $$| $$| $$  | $$ /$$__  $$| $$      | $$  \\ $$ /$$__  $$| $$ | $$ | $$| $$_____/    \n";
+    title += "   | $$  | $$         | $$|  $$$$$$$| $$      | $$ | $$ | $$| $$| $$  | $$|  $$$$$$$| $$      |  $$$$$$/|  $$$$$$$| $$ | $$ | $$|  $$$$$$$    \n";
+    title += "   |__/  |__/         |__/ \\_______/|__/      |__/ |__/ |__/|__/|__/  |__/ \\_______/|__/       \\______/ \\_______/|__/ |__/ |__/ \\_______/    \n";
+                                                                                                                                            
+    return title;
 }
 
 
 
-
+     /*************************************************************
+    * Function: warGamesText ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints characters with delay to mimick the
+    * war games movie and terminal style
+    * Input parameters: string and millisecond delay
+    * Returns: terminal output
+    *************************************************************/
 
 
 void warGamesText(const std::string& text, int delayMS = 50) { //function to print characters one at a time
@@ -403,6 +650,29 @@ void warGamesText(const std::string& text, int delayMS = 50) { //function to pri
     }
     std::cout << std::endl;
 }
+
+     /*************************************************************
+    * Function: clearInputBuffer ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: utility to clear cin inputs
+    * Input parameters: void
+    * Returns: empty buffer
+    *************************************************************/
+
+void clearInputBuffer() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+     /*************************************************************
+    * Function: mainMenu ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints game mainMenu
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
 
 int mainMenu() {
     int choice;
@@ -459,6 +729,15 @@ WARING: The contents below are for the Full Game Mode. The code can be safely
 ===============================================================================
 */
 
+     /*************************************************************
+    * Function: characterSelection ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints game class options
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
+
 int characterSelection(){
     int choice;
 
@@ -472,7 +751,7 @@ int characterSelection(){
 
     warGamesText(menu, 1);
 
-    while (true) {
+    while (true) { //loop runs until a valid option is selected
         std::cout << "Selected a Character: ";
         std::cin >> choice;
 
@@ -525,16 +804,30 @@ int characterSelection(){
     return choice;
 }
 
-void clearInputBuffer() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+     /*************************************************************
+    * Function: pauseProgram()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: utility to pause all activity until enter is pressed
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
+
 
 void pauseProgram() {
     std::cout << "Press enter to continue...";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
 }
+
+     /*************************************************************
+    * Function: missionSuccess ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the success of a mission
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
 
 void missionSuccess(Player* player){
     std::this_thread::sleep_for(std::chrono::seconds(3));
@@ -547,20 +840,41 @@ void missionSuccess(Player* player){
     pauseProgram();
 }
 
+     /*************************************************************
+    * Function: missionFailed ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the failure of the mission and restarts
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
+
 void missionFailed(Player* player){
     warGamesText("MISSION FAILED", 50);
     player->printPlayerInfo();
     warGamesText("RESTARTING MISSION...", 50);
     pauseProgram();
     clearScreen();
+    player->setExperience(0);
+    player->setHealth(100);
     warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
     std::cout << "You wake up dazed and confused in the streets of Onderon.\n\n";
 }
 
+     /*************************************************************
+    * Function: fullGameMode ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Runs the main functionality of the game including
+    * character selection, name input and mission initialization
+    * Input parameters: void
+    * Returns: terminal output
+    *************************************************************/
+
 void fullGameMode() {
     int choice;
     std::string name;
-    Player* player;
+    Player* player; // creates a player pointer to be refrerenced by the selected class
 
     clearScreen();
 
@@ -577,7 +891,7 @@ void fullGameMode() {
 
     if (choice == 1) {
         Jedi* jediPlayer = new Jedi;
-        player = jediPlayer;
+        player = jediPlayer; //links the player pointer to one of its inherited classes
         jediPlayer->initializePlayer(name);
         jediPlayer->removeInventoryItem();
         jediPlayer->addInventoryItem(possibleItems[0]);
@@ -606,16 +920,27 @@ void fullGameMode() {
         bountyHunterPlayer->removeInventoryItem();
         bountyHunterPlayer->addInventoryItem(possibleItems[1]);
     } else {
-        return;
+        warGamesText("\nGame Ended. May the Force be with you!\n", 50);
+        return; //exits the game
     }
 
-    player->printPlayerInfo();
+    player->printPlayerInfo(); //prints player card
     pauseProgram();
     clearScreen();
+
     warGamesText("MISSION ONE ... ESCAPE FROM ONDERON", 50);
     warGamesText("You wake up dazed and confused in the streets of Onderon.",50);
     onderonStreets(player);
 }
+
+     /*************************************************************
+    * Function: onderonStreets ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the first stage of the mission
+    * Input parameters: player pointer pass through
+    * Returns: terminal output
+    *************************************************************/
 
 void onderonStreets(Player* player){
     int choice;
@@ -650,9 +975,17 @@ void onderonStreets(Player* player){
                 clearInputBuffer();
         }
 
-    } while (choice != 4 && invalidInput);
+    } while (choice != 4 && invalidInput); //Loop runs when invalid choice
 }
 
+     /*************************************************************
+    * Function: cantina ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the location of the mission
+    * Input parameters: player pointer pass through
+    * Returns: terminal output
+    *************************************************************/
 
 void cantina(Player* player) {
     BountyHunter mando;
@@ -681,7 +1014,7 @@ void cantina(Player* player) {
                 }
 
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-                player->loopRound((*player), mando, 1);
+                player->loopRound((*player), mando, 1); //fight
 
                 if (player->getHealth() <= 0) {
                     missionFailed(player);
@@ -708,6 +1041,8 @@ void cantina(Player* player) {
                     missionSuccess(player);
                     clearScreen();
                 } else {
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    player->loopRound((*player), mando, 1); //fight
                     warGamesText("Boba Fett: Watch your back, I'll be back for you.", 50);
                     pauseProgram();
                     onderonStreets(player);
@@ -727,6 +1062,14 @@ void cantina(Player* player) {
     } while (choice >= 4 || invalidInput);
 }
 
+     /*************************************************************
+    * Function: spacePort ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the location of the mission
+    * Input parameters: player pointer pass through
+    * Returns: terminal output
+    *************************************************************/
 
 void spacePort(Player* player) {
     CloneTrooper arcTrooper;
@@ -755,7 +1098,7 @@ void spacePort(Player* player) {
             } else {
                 warGamesText("CT-5555: Thought you could get passed me huh?", 50);
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-                player->loopRound((*player),arcTrooper,1);
+                player->loopRound((*player),arcTrooper,1); //fight
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 if (player->getHealth() <= 0) {
                     missionFailed(player);
@@ -770,12 +1113,10 @@ void spacePort(Player* player) {
         case 2:
             warGamesText("You attempt to run, but the clone troopers quickly catch up.\n",50);
             warGamesText("CT-5555: You can't get away that easily!",50);
-            if (!(player->attackPlayerSuccess((*player), arcTrooper))){
+            if ((!(player->attackPlayerSuccess((*player), arcTrooper))) && (player->getAlignment()==arcTrooper.getAlignment())){
                 warGamesText("CT-5555: My apologies commander, I did not recognize you.", 50);
                 onderonStreets(player);
-                break;
-            }
-
+            } else {
             player->loopRound((*player),arcTrooper,1);
             std::this_thread::sleep_for(std::chrono::seconds(3));
             if (player->getHealth() <= 0) {
@@ -784,6 +1125,7 @@ void spacePort(Player* player) {
             } else {
                 warGamesText("\nCT-5555: The mission, the nightmares, they're finally... over.", 50);
                 onderonStreets(player);                
+            }
             }
             break;
         case 3:
@@ -798,6 +1140,15 @@ void spacePort(Player* player) {
     }
     } while (choice >= 4 || invalidInput);
 }
+
+     /*************************************************************
+    * Function: capitol ()
+    * Date Created: 11/30/23
+    * Date Last Modified: 11/30/23
+    * Description: Prints the location of the mission
+    * Input parameters: player pointer pass through
+    * Returns: terminal output
+    *************************************************************/
 
 void capitol(Player* player) {
     BattleDroid b1;
