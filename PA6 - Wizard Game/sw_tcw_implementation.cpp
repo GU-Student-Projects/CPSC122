@@ -245,6 +245,21 @@ InventoryItem PlayerInventory::retrieveItem(){
 }
 
      /*************************************************************
+    * Function: emptyList ()
+    * Date Created: 11/26/23
+    * Date Last Modified: 11/26/23
+    * Description: empty's the stack linked list
+    * Input parameters: none
+    * Returns:none
+    *************************************************************/
+
+void PlayerInventory::emptyList(){
+    while (!isEmpty()) {
+        pop();
+    }
+}
+
+     /*************************************************************
     * Function: Jedi::initializePlayer ()
     * Date Created: 11/26/23
     * Date Last Modified: 11/26/23

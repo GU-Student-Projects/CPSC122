@@ -116,6 +116,7 @@ public:
 	bool isEmpty();
 	bool isFull();
 	InventoryItem retrieveItem();
+	void emptyList();
 
 };
 
