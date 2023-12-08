@@ -19,6 +19,7 @@ int main(void)
 	CloneTrooper captain;
 	Sith sithLord;
 
+	srand(time(NULL)); //generate seed
 	clearScreen();
 	warGamesText(titleScreen(), 1);
 	warGamesText("WELCOME TO MY SIMPLE STAR WARS THEMED TERMINAL GAME",50);
@@ -36,7 +37,6 @@ int main(void)
 	else if (3 == choice) { return 0;}
 	else {
 	clearScreen();
-	srand(time(NULL)); //generate seed
 
 	jediMaster.initializePlayer("Mace Windu"); // initialize objects
 	mando.initializePlayer("Jango Fett");
